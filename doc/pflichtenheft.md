@@ -1,15 +1,22 @@
 ---
 title: Pflichtenheft LernApp
 author:
-    - Jannis Nau
-    - Florian Kaiser
-    - Jochen Heimüller
+  - Jannis Nau
+  - Florian Kaiser
+  - Jochen Heimüller
+geometry: margin=2cm
+output:
+  pdf_document:
+    latex_engine: xelatex
+header-includes:
+  - \usepackage{longtable}
+  - \usepackage{array}
+  - \usepackage{booktabs}
+  - \renewcommand{\arraystretch}{1.2}
+  - \setlength{\tabcolsep}{6pt}
+  - \usepackage{makecell}
+  - \renewcommand{\theadfont}{\bfseries}
 ---
-
-# **Pflichtenheft - Lern-App**
-
-**Team:** Jannis Nau, Florian Kaiser, Jochen Heimüller
-
 
 ## **1. Grundlegende Problemstellung**
 
@@ -33,7 +40,7 @@ Das System soll prototypisch zeigen, wie Lernprozesse technisch und architektoni
 | **Backend**           | **.NET 8 / ASP.NET Core Web API (C#)**                              | Hohe Performance, saubere Trennung von Logik und Datenzugriff, gute Unterstützung für REST-basierte Architekturen.       |
 | **Datenbank**         | **SQLite (lokal)** oder **PostgreSQL (optional)**                   | Relationales Schema für Karten/Decks; SQLite genügt für Prototyp.                                                        |
 | **Styling**           | **Angular Material** oder **Bootstrap**                     | Einheitliches UI-Design, responsive Darstellung.                                                                         |
-| **Architekturmuster** | **Client-Server mit REST-Schnittstelle (MVC / Clean Architecture)** | Fördert Wartbarkeit, Testbarkeit und Erweiterbarkeit.                                                                    |
+| **Architektur** | **Client-Server mit REST-Schnittstelle (MVC / Clean Architecture)** | Fördert Wartbarkeit, Testbarkeit und Erweiterbarkeit.                                                                    |
 | **Tests**             | **xUnit / NUnit (Backend)**, **Jasmine + Karma (Frontend)**         | Sicherstellung der Funktionalität und Stabilität.                                                                        |
 
 ## **3. Use Cases**
