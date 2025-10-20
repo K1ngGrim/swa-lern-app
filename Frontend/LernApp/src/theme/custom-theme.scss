@@ -1,0 +1,70 @@
+@use '@angular/material' as mat;
+@use 'sass:color';
+
+// Base palette colors (from your design)
+$tf: #99ddc8;
+$ps: #95bf74;
+$as: #659b5e;
+$fg: #556f44;
+$ds: #283f3b;
+
+// Build palette maps by adjusting lightness around the base color
+$primary-map: (
+  50: color.scale($fg, $lightness: 40%),
+  100: color.scale($fg, $lightness: 30%),
+  200: color.scale($fg, $lightness: 20%),
+  300: color.scale($fg, $lightness: 10%),
+  400: color.scale($fg, $lightness: 5%),
+  500: $fg,
+  600: color.scale($fg, $lightness: -6%),
+  700: color.scale($fg, $lightness: -12%),
+  800: color.scale($fg, $lightness: -18%),
+  900: color.scale($fg, $lightness: -24%),
+  A100: color.scale($fg, $lightness: 50%),
+  A200: color.scale($fg, $lightness: 40%),
+  A400: color.scale($fg, $lightness: 20%),
+  A700: color.scale($fg, $lightness: -8%)
+);
+
+$accent-map: (
+  50: color.scale($as, $lightness: 40%),
+  100: color.scale($as, $lightness: 30%),
+  200: color.scale($as, $lightness: 20%),
+  300: color.scale($as, $lightness: 10%),
+  400: color.scale($as, $lightness: 5%),
+  500: $as,
+  600: color.scale($as, $lightness: -6%),
+  700: color.scale($as, $lightness: -12%),
+  800: color.scale($as, $lightness: -18%),
+  900: color.scale($as, $lightness: -24%),
+  A100: color.scale($as, $lightness: 50%),
+  A200: color.scale($as, $lightness: 40%),
+  A400: color.scale($as, $lightness: 20%),
+  A700: color.scale($as, $lightness: -8%)
+);
+
+$primary-palette: mat.define-palette($primary-map, 500);
+$accent-palette: mat.define-palette($accent-map, 500);
+
+$theme: mat.define-light-theme((
+  color: (
+    primary: $primary-palette,
+    accent: $accent-palette,
+    warn: mat.define-palette(mat.$red-palette),
+  ),
+  typography: mat.define-typography-config(),
+));
+
+@include mat.core();
+
+// Apply the theme
+@include mat.all-component-themes($theme);
+
+// Optionally expose CSS variables for custom use
+:root {
+  --tiffany-blue: #{$tf};
+  --pistachio: #{$ps};
+  --asparagus: #{$as};
+  --fern-green: #{$fg};
+  --dark-slate-gray: #{$ds};
+}

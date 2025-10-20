@@ -1,0 +1,42 @@
+<main class="home-container">
+  <h1 class="welcome">{{ 'HOME.WELCOME' | translate }}</h1>
+  <p class="subtitle">{{ 'HOME.SUBTITLE' | translate }}</p>
+
+  <section class="actions">
+    <mat-card
+      class="action-card"
+      role="button"
+      aria-label="{{ 'HOME.NEW_DECK' | translate }}"
+      tabindex="0"
+    >
+      <div class="action-content">
+        <mat-icon class="action-icon" aria-hidden="true">note_add</mat-icon>
+        <div class="action-label">{{ 'HOME.NEW_DECK' | translate }}</div>
+      </div>
+    </mat-card>
+
+    <mat-card
+      class="action-card"
+      role="button"
+      aria-label="{{ 'HOME.VIEW_DECKS' | translate }}"
+      tabindex="0"
+    >
+      <div class="action-content">
+        <mat-icon class="action-icon" aria-hidden="true">folder_open</mat-icon>
+        <div class="action-label">{{ 'HOME.VIEW_DECKS' | translate }}</div>
+      </div>
+    </mat-card>
+
+    <mat-card
+      class="action-card"
+      role="button"
+      aria-label="{{ 'HOME.STATISTICS' | translate }}"
+      tabindex="0"
+    >
+      <div class="action-content">
+        <mat-icon class="action-icon" aria-hidden="true">analytics</mat-icon>
+        <div class="action-label">{{ 'HOME.STATISTICS' | translate }}</div>
+      </div>
+    </mat-card>
+  </section>
+</main>
