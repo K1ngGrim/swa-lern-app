@@ -143,7 +143,9 @@ main.main {
   box-shadow: 0 6px 18px rgba(16, 24, 40, 0.06);
   border: 1px solid rgba(16, 24, 40, 0.06);
   cursor: pointer;
-  transition: transform 0.12s ease, box-shadow 0.12s ease;
+  transition:
+    transform 0.12s ease,
+    box-shadow 0.12s ease;
   text-decoration: none;
   color: inherit;
 }
@@ -168,7 +170,9 @@ main.main {
   box-shadow: 0 6px 18px rgba(16, 24, 40, 0.06);
   border: 1px solid rgba(16, 24, 40, 0.06);
   cursor: pointer;
-  transition: transform 0.12s ease, box-shadow 0.12s ease;
+  transition:
+    transform 0.12s ease,
+    box-shadow 0.12s ease;
   text-decoration: none;
   color: inherit;
 }

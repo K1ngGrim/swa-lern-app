@@ -23,7 +23,7 @@ $primary-map: (
   A100: color.scale($fg, $lightness: 50%),
   A200: color.scale($fg, $lightness: 40%),
   A400: color.scale($fg, $lightness: 20%),
-  A700: color.scale($fg, $lightness: -8%)
+  A700: color.scale($fg, $lightness: -8%),
 );
 
 $accent-map: (
@@ -40,20 +40,22 @@ $accent-map: (
   A100: color.scale($as, $lightness: 50%),
   A200: color.scale($as, $lightness: 40%),
   A400: color.scale($as, $lightness: 20%),
-  A700: color.scale($as, $lightness: -8%)
+  A700: color.scale($as, $lightness: -8%),
 );
 
 $primary-palette: mat.define-palette($primary-map, 500);
 $accent-palette: mat.define-palette($accent-map, 500);
 
-$theme: mat.define-light-theme((
-  color: (
-    primary: $primary-palette,
-    accent: $accent-palette,
-    warn: mat.define-palette(mat.$red-palette),
-  ),
-  typography: mat.define-typography-config(),
-));
+$theme: mat.define-light-theme(
+  (
+    color: (
+      primary: $primary-palette,
+      accent: $accent-palette,
+      warn: mat.define-palette(mat.$red-palette),
+    ),
+    typography: mat.define-typography-config(),
+  )
+);
 
 @include mat.core();
 

@@ -4,8 +4,6 @@ import { Component } from '@angular/core';
   selector: 'app-create-new-deck-page',
   imports: [],
   templateUrl: './create-new-deck-page.html',
-  styleUrl: './create-new-deck-page.scss'
+  styleUrl: './create-new-deck-page.scss',
 })
-export class CreateNewDeckPage {
-
-}
+export class CreateNewDeckPage {}

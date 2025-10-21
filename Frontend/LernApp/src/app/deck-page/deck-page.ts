@@ -4,8 +4,6 @@ import { Component } from '@angular/core';
   selector: 'app-deck-page',
   imports: [],
   templateUrl: './deck-page.html',
-  styleUrl: './deck-page.scss'
+  styleUrl: './deck-page.scss',
 })
-export class DeckPage {
-
-}
+export class DeckPage {}
