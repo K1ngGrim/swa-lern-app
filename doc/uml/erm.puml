@@ -1,4 +1,4 @@
-@startuml
+@startuml EntityRelationshipDiagram
 ' SmartLearn – Entity-Relationship-Diagramm (GUID-Version, kompatible Syntax)
 
 !theme plain
