@@ -108,7 +108,7 @@ app-root {
 }
 
 body {
-  font-family: Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-family: Roboto, "Helvetica Neue", Arial, sans-serif;
   color: var(--app-foreground);
   background: #fafafa;
   -webkit-font-smoothing: antialiased;
@@ -135,7 +135,7 @@ main.main {
   gap: 1rem;
   padding: var(--action-card-padding);
   border-radius: var(--action-card-radius);
-  /* Prefer Material's card elevated container color; fall back to our card surface, then app surface, then white */
+  /* Prefer Material"s card elevated container color; fall back to our card surface, then app surface, then white */
   background-color: var(
     --mat-card-elevated-container-color,
     var(--mat-sys-surface-container-low, var(--card-surface, var(--app-surface, #ffffff)))
@@ -162,7 +162,7 @@ main.main {
   gap: 1rem;
   padding: var(--action-card-padding);
   border-radius: var(--action-card-radius);
-  /* Prefer Material's card elevated container color; fall back to our card surface, then app surface, then white */
+  /* Prefer Material"s card elevated container color; fall back to our card surface, then app surface, then white */
   background-color: var(
     --mat-card-elevated-container-color,
     var(--mat-sys-surface-container-low, var(--card-surface, var(--app-surface, #ffffff)))

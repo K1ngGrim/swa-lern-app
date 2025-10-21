@@ -1,9 +1,9 @@
-import { Component } from '@angular/core';
+import { Component } from "@angular/core";
 
 @Component({
-  selector: 'app-statistics-page',
+  selector: "app-statistics-page",
   imports: [],
-  templateUrl: './statistics-page.html',
-  styleUrl: './statistics-page.scss',
+  templateUrl: "./statistics-page.html",
+  styleUrl: "./statistics-page.scss",
 })
 export class StatisticsPage {}
