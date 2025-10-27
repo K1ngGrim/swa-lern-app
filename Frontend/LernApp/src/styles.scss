@@ -17,75 +17,10 @@
   --action-card-radius: 12px;
   --action-card-padding: 1.25rem;
   --action-icon-size: 28px;
-  /* card surface: fully opaque subtle tint (light green) */
 
   /* Gradients */
   --gradient-top: linear-gradient(
     0deg,
-    var(--tiffany-blue),
-    var(--pistachio),
-    var(--asparagus),
-    var(--fern-green),
-    var(--dark-slate-gray)
-  );
-  --gradient-right: linear-gradient(
-    90deg,
-    var(--tiffany-blue),
-    var(--pistachio),
-    var(--asparagus),
-    var(--fern-green),
-    var(--dark-slate-gray)
-  );
-  --gradient-bottom: linear-gradient(
-    180deg,
-    var(--tiffany-blue),
-    var(--pistachio),
-    var(--asparagus),
-    var(--fern-green),
-    var(--dark-slate-gray)
-  );
-  --gradient-left: linear-gradient(
-    270deg,
-    var(--tiffany-blue),
-    var(--pistachio),
-    var(--asparagus),
-    var(--fern-green),
-    var(--dark-slate-gray)
-  );
-  --gradient-top-right: linear-gradient(
-    45deg,
-    var(--tiffany-blue),
-    var(--pistachio),
-    var(--asparagus),
-    var(--fern-green),
-    var(--dark-slate-gray)
-  );
-  --gradient-bottom-right: linear-gradient(
-    135deg,
-    var(--tiffany-blue),
-    var(--pistachio),
-    var(--asparagus),
-    var(--fern-green),
-    var(--dark-slate-gray)
-  );
-  --gradient-top-left: linear-gradient(
-    225deg,
-    var(--tiffany-blue),
-    var(--pistachio),
-    var(--asparagus),
-    var(--fern-green),
-    var(--dark-slate-gray)
-  );
-  --gradient-bottom-left: linear-gradient(
-    315deg,
-    var(--tiffany-blue),
-    var(--pistachio),
-    var(--asparagus),
-    var(--fern-green),
-    var(--dark-slate-gray)
-  );
-  --gradient-radial: radial-gradient(
-    circle,
     var(--tiffany-blue),
     var(--pistachio),
     var(--asparagus),
@@ -138,7 +73,7 @@ main.main {
   /* Prefer Material"s card elevated container color; fall back to our card surface, then app surface, then white */
   background-color: var(
     --mat-card-elevated-container-color,
-    var(--mat-sys-surface-container-low, var(--card-surface, var(--app-surface, #ffffff)))
+    var(--mat-sys-surface-container-low, var(--app-surface, #ffffff))
   );
   box-shadow: 0 6px 18px rgba(16, 24, 40, 0.06);
   border: 1px solid rgba(16, 24, 40, 0.06);
@@ -154,25 +89,4 @@ main.main {
 .action-card:focus {
   transform: translateY(-4px);
   box-shadow: 0 8px 28px rgba(16, 24, 40, 0.12);
-}
-
-.action-card {
-  display: inline-flex;
-  align-items: center;
-  gap: 1rem;
-  padding: var(--action-card-padding);
-  border-radius: var(--action-card-radius);
-  /* Prefer Material"s card elevated container color; fall back to our card surface, then app surface, then white */
-  background-color: var(
-    --mat-card-elevated-container-color,
-    var(--mat-sys-surface-container-low, var(--card-surface, var(--app-surface, #ffffff)))
-  );
-  box-shadow: 0 6px 18px rgba(16, 24, 40, 0.06);
-  border: 1px solid rgba(16, 24, 40, 0.06);
-  cursor: pointer;
-  transition:
-    transform 0.12s ease,
-    box-shadow 0.12s ease;
-  text-decoration: none;
-  color: inherit;
 }
