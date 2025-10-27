@@ -1,0 +1,96 @@
+### .NET & ASP.NET Core ###
+# Build results
+bin/
+obj/
+out/
+artifacts/
+
+# User-specific files
+*.user
+*.rsuser
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Logs
+*.log
+logs/
+log/
+*.tlog
+
+# Visual Studio cache/options directory
+.vs/
+
+# Rider / JetBrains
+.idea/
+*.sln.iml
+*.DotSettings.user
+*.DotSettings
+
+# Paketverwaltung
+# NuGet
+*.nupkg
+*.snupkg
+.nuget/
+
+# npm / frontend build (falls Angular/React dabei)
+node_modules/
+dist/
+wwwroot/lib/
+
+# Entity Framework
+Migrations/ (optional — kannst du behalten, falls du Migrations mitversionieren willst)
+# Wenn du Migrations sichern möchtest, nimm diese Zeile raus ↑
+
+# Secret management / Konfigurationsdateien
+appsettings.Development.json
+appsettings.Local.json
+appsettings.*.local.json
+*.secrets.json
+
+# Zertifikate
+*.pfx
+*.cer
+*.key
+*.pem
+
+# Environment files
+.env
+.env.*
+
+# Publish output
+publish/
+PublishProfiles/
+
+# Tooling
+coverage/
+TestResults/
+ncrunch*
+*.coverage
+*.coveragexml
+
+# Docker
+docker-compose.override.yml
+.docker/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.bak
+*.swp
+*.swo
+Thumbs.db
+Desktop.ini
+
+# ReSharper
+_ReSharper*/
+*.DotSettings.user
+
+# Rider local history
+.idea/.idea.*
+
+# OS specific
+.DS_Store
+ehthumbs.db
+Icon?
