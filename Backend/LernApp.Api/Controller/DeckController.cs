@@ -10,7 +10,7 @@ namespace LernApp.Api.Controller;
 [Route("/api/decks")]
 public class DeckController(
     DeckService deckService,
-    ILogger<IdentityController> logger) : ControllerBase
+    ILogger<DeckController> logger) : ControllerBase
 {
 
     [HttpGet]
@@ -25,6 +25,12 @@ public class DeckController(
     public async Task CreateDeck([FromBody] CreateRequest<DeckCreateModel> request)
     {
         await deckService.CreateDeckAsync(request, User);
+    }
+
+    [HttpGet("{deckId}")]
+    public async Task<ActionResult<DeckResponseModel>> GetDeck([FromRoute] string deckId)
+    {
+        throw new Exception("Not implemented");
     }
 
 
