@@ -28,9 +28,9 @@ public class DeckController(
     }
 
     [HttpGet("{deckId}")]
-    public async Task<ActionResult<DeckResponseModel>> GetDeck([FromRoute] string deckId)
+    public async Task<ActionResult<DeckDetailResponseModel>> GetDeck([FromRoute] Guid deckId)
     {
-        throw new Exception("Not implemented");
+        return await deckService.GetDeckDetailAsync(deckId, User);
     }
 
 

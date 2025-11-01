@@ -1,6 +1,7 @@
 using LernApp.Api.Models;
 using LernApp.Api.Models.Generic;
 using LernApp.Models;
+using LernApp.Models.Data;
 using LernApp.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -51,6 +52,35 @@ public class DeckService(
             });
 
         await context.SaveChangesAsync();
+    }
+
+    public async Task<DeckDetailResponseModel> GetDeckDetailAsync(Guid deckId, Invoker invoker)
+    {
+        var exists = await context.Decks.AnyAsync(x => x.DeckId == deckId && x.UserId == invoker.UserId);
+        
+        if(!exists)
+            throw new Exception("Deck not found");
+
+        return await context.Decks
+            .Where(x => x.DeckId == deckId && x.UserId == invoker.UserId)
+            .Include(y => y.Cards)
+            .Select(x => new DeckDetailResponseModel
+            {
+                DeckId = deckId,
+                Name = x.Name,
+                Description = x.Description,
+                UserId = x.UserId,
+                Cards = x.Cards
+                    .Select(y => new CardData
+                    {
+                        Back = y.Back,
+                        Front = y.Front,
+                        Title = y.Title,
+                        CardId = y.CardId,
+                        DeckId = y.DeckId,
+                    }).ToList()
+
+            }).SingleAsync();
     }
 
 

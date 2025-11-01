@@ -4,11 +4,14 @@ using LernApp.Models.Entities;
 
 namespace LernApp.Models.Data;
 
-public class CardData
+public class CardData : CardBase
 {
     [Column("card_id")]
     public Guid CardId { get; set; }
+}
 
+public class CardBase
+{
     [Column("title")]
     [StringLength(255)]
     public required string Title { get; set; }
@@ -21,5 +24,4 @@ public class CardData
 
     [Column("deck_id")]
     public Guid DeckId { get; set; }
-
 }

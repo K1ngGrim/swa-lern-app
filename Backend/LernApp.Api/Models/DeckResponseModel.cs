@@ -6,3 +6,8 @@ public class DeckResponseModel : DeckData
 {
 
 }
+
+public class DeckDetailResponseModel : DeckData
+{
+    public List<CardData> Cards { get; set; } = [];
+}
