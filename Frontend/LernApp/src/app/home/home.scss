@@ -15,6 +15,40 @@
   justify-content: center;
 }
 
+.page-header {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 10;
+}
+
+.logout-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: var(--app-primary);
+  border: 1px solid var(--app-primary);
+  border-radius: 6px;
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
+}
+
+.logout-btn:hover,
+.logout-btn:focus {
+  background: var(--dark-slate-gray);
+  border-color: var(--dark-slate-gray);
+}
+
+.logout-icon {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+}
+
 .welcome {
   margin: 0;
   font-size: 1.5rem;

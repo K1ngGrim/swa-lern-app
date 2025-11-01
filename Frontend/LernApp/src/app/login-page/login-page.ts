@@ -2,13 +2,14 @@ import { Component } from '@angular/core';
 import { NgForm, FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
 import { AuthService } from '../auth.service';
-import { AccountCreateRequest, LoginRequest } from 'api';
+import { AccountCreateRequest, LoginRequest, LoginResponse, IdentityResponse } from 'api';
 
 @Component({
   selector: 'app-login-page',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule],
+  imports: [CommonModule, FormsModule, RouterModule, TranslateModule],
   templateUrl: './login-page.html',
   styleUrl: './login-page.scss',
 })
@@ -34,12 +35,19 @@ export class LoginPage {
       };
 
       this.auth.register(payload).subscribe({
-        next: () => {
-          this.loading = false;
-          this.success = 'Registration successful. You can now login.';
-          this.isRegister = false;
+        next: (response: IdentityResponse) => {
+          console.log('Register response:', response);
+          if (response.success) {
+            this.loading = false;
+            this.success = 'Registration successful. You can now login.';
+            this.isRegister = false;
+          } else {
+            this.loading = false;
+            this.error = response.error || 'Registration failed';
+          }
         },
         error: (err) => {
+          console.log('Register error:', err);
           this.loading = false;
           this.error = err && err.message ? err.message : 'Registration failed';
         },
@@ -51,12 +59,19 @@ export class LoginPage {
       };
 
       this.auth.login(payload).subscribe({
-        next: () => {
-          this.loading = false;
-          // navigate to home after successful login
-          this.router.navigate(['/home']);
+        next: (response: LoginResponse) => {
+          console.log('Login response:', response);
+          if (response.success) {
+            this.loading = false;
+            // navigate to home after successful login
+            this.router.navigate(['/home']);
+          } else {
+            this.loading = false;
+            this.error = response.error || 'Login failed';
+          }
         },
         error: (err) => {
+          console.log('Login error:', err);
           this.loading = false;
           this.error = err && err.message ? err.message : 'Login failed';
         },

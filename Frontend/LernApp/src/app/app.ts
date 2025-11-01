@@ -14,7 +14,11 @@ import { AuthService } from './auth.service';
 export class App {
   protected readonly title = signal('LernApp');
 
-  constructor(private translate: TranslateService, public auth: AuthService, private router: Router) {
+  constructor(
+    private translate: TranslateService,
+    public auth: AuthService,
+    private router: Router
+  ) {
     const supported = ['en', 'de'];
     translate.addLangs(supported);
     const browser = translate.getBrowserLang() || 'en';

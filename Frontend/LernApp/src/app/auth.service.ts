@@ -1,5 +1,6 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Injectable, signal } from '@angular/core';
+import { toObservable } from '@angular/core/rxjs-interop';
+import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
 import { IdentityService } from '../../projects/api/src/lib/api/identity.service';
@@ -12,8 +13,8 @@ import {
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private currentUserSubject = new BehaviorSubject<LoginResponse | null>(null);
-  public currentUser$ = this.currentUserSubject.asObservable();
+  private currentUserSignal = signal<LoginResponse | null>(null);
+  public currentUser$ = toObservable(this.currentUserSignal);
 
   private identityService: IdentityService;
 
@@ -34,7 +35,7 @@ export class AuthService {
           : null;
       if (raw) {
         const parsed = JSON.parse(raw) as LoginResponse;
-        this.currentUserSubject.next(parsed);
+        this.currentUserSignal.set(parsed);
       }
     } catch {
       // ignore parse errors
@@ -70,8 +71,10 @@ export class AuthService {
   login(loginRequest: LoginRequest): Observable<LoginResponse> {
     return this.identityService.apiIdentityLoginPost({ loginRequest }).pipe(
       tap((res: LoginResponse) => {
-        this.currentUserSubject.next(res);
-        this.persist(res);
+        if (res.success) {
+          this.currentUserSignal.set(res);
+          this.persist(res);
+        }
       })
     );
   }
@@ -80,7 +83,7 @@ export class AuthService {
    * Clear locally-stored auth state.
    */
   logout(): void {
-    this.currentUserSubject.next(null);
+    this.currentUserSignal.set(null);
     this.persist(null);
   }
 
@@ -88,6 +91,6 @@ export class AuthService {
    * Return immediately-available current user value.
    */
   public get currentUserValue(): LoginResponse | null {
-    return this.currentUserSubject.getValue();
+    return this.currentUserSignal();
   }
 }
