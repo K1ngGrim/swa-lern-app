@@ -1,0 +1,32 @@
+<div class="login-container">
+  <form #f="ngForm" (ngSubmit)="onSubmit(f)">
+    <h2 *ngIf="!isRegister">Login</h2>
+    <h2 *ngIf="isRegister">Register</h2>
+
+    <div class="form-row">
+      <label for="username">Username</label>
+      <input id="username" name="username" required ngModel />
+    </div>
+
+    <div class="form-row" *ngIf="isRegister">
+      <label for="mail">Email</label>
+      <input id="mail" name="mail" type="email" required ngModel />
+    </div>
+
+    <div class="form-row">
+      <label for="password">Password</label>
+      <input id="password" name="password" type="password" required ngModel />
+    </div>
+
+    <div class="form-row">
+      <button type="submit" [disabled]="loading">{{ loading ? (isRegister ? 'Registering…' : 'Logging in…') : (isRegister ? 'Register' : 'Login') }}</button>
+    </div>
+
+    <div class="form-row">
+      <button type="button" (click)="toggleMode()">{{ isRegister ? 'Have an account? Login' : 'New here? Register' }}</button>
+    </div>
+
+    <div *ngIf="error" class="error">{{ error }}</div>
+    <div *ngIf="success" class="success">{{ success }}</div>
+  </form>
+</div>

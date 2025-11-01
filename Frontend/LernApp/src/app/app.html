@@ -1,3 +1,18 @@
+<header class="app-header">
+  <nav>
+    <a routerLink="/home">Home</a>
+    <a routerLink="/statistics">Statistics</a>
+    <a routerLink="/decks">Decks</a>
+
+    <span *ngIf="auth.currentUser$ | async; else loggedOut">
+      <button (click)="logout()">Logout</button>
+    </span>
+    <ng-template #loggedOut>
+      <a routerLink="/login">Login</a>
+    </ng-template>
+  </nav>
+</header>
+
 <main class="main">
   <router-outlet />
 </main>

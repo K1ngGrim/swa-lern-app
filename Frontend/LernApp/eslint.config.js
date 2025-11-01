@@ -8,7 +8,7 @@ export default [
   js.configs.recommended,
   prettier,
   {
-  ignores: ['dist/**', 'out-tsc/**', 'node_modules/**', 'build/**', 'test-out/**', 'coverage/**'],
+    ignores: ['dist/**', 'out-tsc/**', 'node_modules/**', 'build/**', 'test-out/**', 'coverage/**'],
     files: ['src/app/**/*.ts', 'src/main.ts'],
     languageOptions: {
       parser: tsParser,
@@ -27,12 +27,25 @@ export default [
       '@typescript-eslint': tsPlugin,
     },
     rules: {
-      '@typescript-eslint/no-unused-vars': ['warn'],
+      // Disable core ESLint no-unused-vars so the TypeScript-aware rule below is used
+      'no-unused-vars': 'off',
+      // Constructor-injected dependencies in Angular can appear unused to the
+      // linter if they're only used for DI. Ignore unused function args to
+      // prevent false positives while still warning for unused variables.
+      '@typescript-eslint/no-unused-vars': [
+        'warn',
+        {
+          vars: 'all',
+          args: 'none',
+          ignoreRestSiblings: true,
+          varsIgnorePattern: '^_',
+        },
+      ],
       '@typescript-eslint/no-explicit-any': 'off',
     },
   },
   {
-  ignores: ['dist/**', 'out-tsc/**', 'node_modules/**', 'build/**', 'test-out/**', 'coverage/**'],
+    ignores: ['dist/**', 'out-tsc/**', 'node_modules/**', 'build/**', 'test-out/**', 'coverage/**'],
     files: ['src/app/**/*.spec.ts'],
     languageOptions: {
       parser: tsParser,
@@ -53,7 +66,16 @@ export default [
       '@typescript-eslint': tsPlugin,
     },
     rules: {
-      '@typescript-eslint/no-unused-vars': ['warn'],
+      'no-unused-vars': 'off',
+      '@typescript-eslint/no-unused-vars': [
+        'warn',
+        {
+          vars: 'all',
+          args: 'none',
+          ignoreRestSiblings: true,
+          varsIgnorePattern: '^_',
+        },
+      ],
       '@typescript-eslint/no-explicit-any': 'off',
     },
   },

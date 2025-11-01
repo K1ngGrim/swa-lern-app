@@ -20,7 +20,40 @@ export class AuthService {
 
 	constructor(identityService: IdentityService) {
 		this.identityService = identityService;
+		this.restoreFromStorage();
 	}
+
+	// Persist key for localStorage
+	private readonly STORAGE_KEY = 'lernapp_currentUser';
+
+	// restore persisted user if present
+	private restoreFromStorage() {
+		try {
+			const raw = typeof window !== 'undefined' && window.localStorage ? window.localStorage.getItem(this.STORAGE_KEY) : null;
+			if (raw) {
+				const parsed = JSON.parse(raw) as LoginResponse;
+				this.currentUserSubject.next(parsed);
+			}
+		} catch {
+			// ignore parse errors
+		}
+	}
+
+	// Save current user to storage
+	private persist(user: LoginResponse | null) {
+		try {
+			if (typeof window !== 'undefined' && window.localStorage) {
+				if (user) {
+					window.localStorage.setItem(this.STORAGE_KEY, JSON.stringify(user));
+				} else {
+					window.localStorage.removeItem(this.STORAGE_KEY);
+				}
+			}
+		} catch {
+			// ignore storage errors
+		}
+	}
+
 
 	/**
 	 * Register a new account using the generated API.
@@ -39,6 +72,7 @@ export class AuthService {
 			.pipe(
 				tap((res: LoginResponse) => {
 					this.currentUserSubject.next(res);
+					this.persist(res);
 				})
 			);
 	}
@@ -55,5 +89,13 @@ export class AuthService {
 	 */
 	logout(): void {
 		this.currentUserSubject.next(null);
+		this.persist(null);
+	}
+
+	/**
+	 * Return immediately-available current user value.
+	 */
+	public get currentUserValue(): LoginResponse | null {
+		return this.currentUserSubject.getValue();
 	}
 }

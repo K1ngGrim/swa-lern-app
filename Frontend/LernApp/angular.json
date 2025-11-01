@@ -65,7 +65,8 @@
               "buildTarget": "LernApp:build:production"
             },
             "development": {
-              "buildTarget": "LernApp:build:development"
+              "buildTarget": "LernApp:build:development",
+              "proxyConfig": "proxy.conf.json"
             }
           },
           "defaultConfiguration": "development"
