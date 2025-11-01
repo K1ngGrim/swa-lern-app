@@ -1,17 +1,22 @@
 <div class="login-container">
   <form #f="ngForm" (ngSubmit)="onSubmit(f)">
-    <h2 *ngIf="!isRegister">Login</h2>
-    <h2 *ngIf="isRegister">Register</h2>
+    @if (!isRegister) {
+      <h2>Login</h2>
+    } @else {
+      <h2>Register</h2>
+    }
 
     <div class="form-row">
-      <label for="username">Username</label>
-      <input id="username" name="username" required ngModel />
+      <label for="email">Email</label>
+      <input id="email" name="email" type="email" required ngModel />
     </div>
 
-    <div class="form-row" *ngIf="isRegister">
-      <label for="mail">Email</label>
-      <input id="mail" name="mail" type="email" required ngModel />
-    </div>
+    @if (isRegister) {
+      <div class="form-row">
+        <label for="mail">Email</label>
+        <input id="mail" name="mail" type="email" required ngModel />
+      </div>
+    }
 
     <div class="form-row">
       <label for="password">Password</label>
@@ -23,10 +28,14 @@
     </div>
 
     <div class="form-row">
-      <button type="button" (click)="toggleMode()">{{ isRegister ? 'Have an account? Login' : 'New here? Register' }}</button>
+      <!-- Toggle removed: keep the login form focused and avoid unstyled secondary buttons -->
     </div>
 
-    <div *ngIf="error" class="error">{{ error }}</div>
-    <div *ngIf="success" class="success">{{ success }}</div>
+    @if (error) {
+      <div class="error">{{ error }}</div>
+    }
+    @if (success) {
+      <div class="success">{{ success }}</div>
+    }
   </form>
 </div>

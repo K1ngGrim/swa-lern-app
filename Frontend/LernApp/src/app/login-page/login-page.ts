@@ -5,9 +5,6 @@ import { CommonModule } from '@angular/common';
 import { AuthService } from '../auth.service';
 import { AccountCreateRequest, LoginRequest } from 'api';
 
-// Avoid importing generated model types here to keep the component minimal and
-// avoid any path-resolution issues in the quick scaffold. Use `any` for payload/response.
-
 @Component({
   selector: 'app-login-page',
   standalone: true,
@@ -42,14 +39,14 @@ export class LoginPage {
           this.success = 'Registration successful. You can now login.';
           this.isRegister = false;
         },
-        error: (err: any) => {
+        error: (err) => {
           this.loading = false;
           this.error = err && err.message ? err.message : 'Registration failed';
         },
       });
     } else {
       const payload: LoginRequest = {
-        email: form.value.mail,
+        email: form.value.email,
         password: form.value.password,
       };
 
@@ -59,7 +56,7 @@ export class LoginPage {
           // navigate to home after successful login
           this.router.navigate(['/home']);
         },
-        error: (err: any) => {
+        error: (err) => {
           this.loading = false;
           this.error = err && err.message ? err.message : 'Login failed';
         },

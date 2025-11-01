@@ -16,3 +16,19 @@
   color: #b00020;
   margin-top: 0.5rem;
 }
+
+/* Basic button styles to avoid default unstyled controls */
+button {
+  background-color: #1976d2;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 0.75rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+button[disabled] {
+  opacity: 0.6;
+  cursor: default;
+}

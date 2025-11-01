@@ -41,7 +41,8 @@ export default [
           varsIgnorePattern: '^_',
         },
       ],
-      '@typescript-eslint/no-explicit-any': 'off',
+      // ban `any` in app source files
+      '@typescript-eslint/no-explicit-any': 'error',
     },
   },
   {
@@ -76,6 +77,26 @@ export default [
           varsIgnorePattern: '^_',
         },
       ],
+      // also ban `any` in spec files
+      '@typescript-eslint/no-explicit-any': 'error',
+    },
+  },
+  // Keep generated API code permissive — it's produced by OpenAPI generator
+  {
+    ignores: ['dist/**', 'out-tsc/**', 'node_modules/**', 'build/**', 'test-out/**', 'coverage/**'],
+    files: ['projects/api/**'],
+    languageOptions: {
+      parser: tsParser,
+      parserOptions: {
+        project: './projects/api/tsconfig.lib.json',
+        sourceType: 'module',
+      },
+    },
+    plugins: {
+      '@typescript-eslint': tsPlugin,
+    },
+    rules: {
+      // allow explicit any in generated code to avoid noisy errors on regen
       '@typescript-eslint/no-explicit-any': 'off',
     },
   },

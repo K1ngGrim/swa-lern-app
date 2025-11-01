@@ -4,12 +4,13 @@
     <a routerLink="/statistics">Statistics</a>
     <a routerLink="/decks">Decks</a>
 
-    <span *ngIf="auth.currentUser$ | async; else loggedOut">
-      <button (click)="logout()">Logout</button>
-    </span>
-    <ng-template #loggedOut>
+    @if (auth.currentUser$ | async) {
+      <span>
+        <button (click)="logout()">Logout</button>
+      </span>
+    } @else {
       <a routerLink="/login">Login</a>
-    </ng-template>
+    }
   </nav>
 </header>
 
