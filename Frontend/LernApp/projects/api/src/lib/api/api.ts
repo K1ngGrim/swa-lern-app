@@ -1,0 +1,13 @@
+export * from './card.service';
+import { CardService } from './card.service';
+export * from './card.serviceInterface';
+export * from './deck.service';
+import { DeckService } from './deck.service';
+export * from './deck.serviceInterface';
+export * from './identity.service';
+import { IdentityService } from './identity.service';
+export * from './identity.serviceInterface';
+export * from './test.service';
+import { TestService } from './test.service';
+export * from './test.serviceInterface';
+export const APIS = [CardService, DeckService, IdentityService, TestService];
