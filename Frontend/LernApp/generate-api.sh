@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# download the latest swagger definition file
+curl -o swagger.json http://localhost:5001/swagger.json
+# remove the existing api folder
+npx rimraf projects/api/src/lib
+# generate the api client
+npx openapi-generator-cli generate --generator-key=lern-app-api
+# delete the swagger definition file
+rm ./swagger.json

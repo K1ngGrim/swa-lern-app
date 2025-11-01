@@ -7,7 +7,8 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "lint": "eslint --fix src/"
+    "lint": "eslint --fix src/",
+    "gen-api": "./generate-api.sh"
   },
   "prettier": {
     "printWidth": 100,
@@ -44,6 +45,7 @@
     "@angular/cli": "^20.3.6",
     "@angular/compiler-cli": "^20.3.0",
     "@eslint/js": "^9.38.0",
+    "@openapitools/openapi-generator-cli": "^2.25.0",
     "@types/jasmine": "~5.1.0",
     "@typescript-eslint/eslint-plugin": "^8.46.2",
     "@typescript-eslint/parser": "^8.46.2",
@@ -54,6 +56,7 @@
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
+    "ng-packagr": "^20.3.0",
     "sass": "^1.93.2",
     "typescript": "5.8"
   }
