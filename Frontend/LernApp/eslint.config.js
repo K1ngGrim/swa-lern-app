@@ -8,7 +8,7 @@ export default [
   js.configs.recommended,
   prettier,
   {
-  ignores: ['dist/**', 'out-tsc/**', 'node_modules/**', 'build/**', 'test-out/**', 'coverage/**'],
+    ignores: ['dist/**', 'out-tsc/**', 'node_modules/**', 'build/**', 'test-out/**', 'coverage/**'],
     files: ['src/app/**/*.ts', 'src/main.ts'],
     languageOptions: {
       parser: tsParser,
@@ -27,12 +27,26 @@ export default [
       '@typescript-eslint': tsPlugin,
     },
     rules: {
-      '@typescript-eslint/no-unused-vars': ['warn'],
-      '@typescript-eslint/no-explicit-any': 'off',
+      // Disable core ESLint no-unused-vars so the TypeScript-aware rule below is used
+      'no-unused-vars': 'off',
+      // Constructor-injected dependencies in Angular can appear unused to the
+      // linter if they're only used for DI. Ignore unused function args to
+      // prevent false positives while still warning for unused variables.
+      '@typescript-eslint/no-unused-vars': [
+        'warn',
+        {
+          vars: 'all',
+          args: 'none',
+          ignoreRestSiblings: true,
+          varsIgnorePattern: '^_',
+        },
+      ],
+      // ban `any` in app source files
+      '@typescript-eslint/no-explicit-any': 'error',
     },
   },
   {
-  ignores: ['dist/**', 'out-tsc/**', 'node_modules/**', 'build/**', 'test-out/**', 'coverage/**'],
+    ignores: ['dist/**', 'out-tsc/**', 'node_modules/**', 'build/**', 'test-out/**', 'coverage/**'],
     files: ['src/app/**/*.spec.ts'],
     languageOptions: {
       parser: tsParser,
@@ -53,7 +67,36 @@ export default [
       '@typescript-eslint': tsPlugin,
     },
     rules: {
-      '@typescript-eslint/no-unused-vars': ['warn'],
+      'no-unused-vars': 'off',
+      '@typescript-eslint/no-unused-vars': [
+        'warn',
+        {
+          vars: 'all',
+          args: 'none',
+          ignoreRestSiblings: true,
+          varsIgnorePattern: '^_',
+        },
+      ],
+      // also ban `any` in spec files
+      '@typescript-eslint/no-explicit-any': 'error',
+    },
+  },
+  // Keep generated API code permissive — it's produced by OpenAPI generator
+  {
+    ignores: ['dist/**', 'out-tsc/**', 'node_modules/**', 'build/**', 'test-out/**', 'coverage/**'],
+    files: ['projects/api/**'],
+    languageOptions: {
+      parser: tsParser,
+      parserOptions: {
+        project: './projects/api/tsconfig.lib.json',
+        sourceType: 'module',
+      },
+    },
+    plugins: {
+      '@typescript-eslint': tsPlugin,
+    },
+    rules: {
+      // allow explicit any in generated code to avoid noisy errors on regen
       '@typescript-eslint/no-explicit-any': 'off',
     },
   },

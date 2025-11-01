@@ -11,6 +11,7 @@ import { provideTranslateHttpLoader } from "@ngx-translate/http-loader";
 import { firstValueFrom } from "rxjs";
 
 import { routes } from "./app.routes";
+import { BASE_PATH } from "../../projects/api/src/lib/variables";
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -20,6 +21,9 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(),
     importProvidersFrom(TranslateModule.forRoot()),
     ...provideTranslateHttpLoader({ prefix: "./assets/i18n/", suffix: ".json" }),
+  // Provide the generated API base path as empty so requests go to the dev server
+  // root (and therefore can be proxied by the Angular dev server).
+  { provide: BASE_PATH, useValue: '' },
     {
       provide: "APP_STARTUP_TRANSLATE",
       useFactory: (translate: TranslateService) => {

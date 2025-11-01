@@ -6,5 +6,24 @@
     "VIEW_DECKS": "View Decks",
     "STATISTICS": "Statistics",
     "APP_TITLE": "LernApp"
+  },
+  "LOGIN": {
+    "TITLE": "LernApp",
+    "SUBTITLE": "Your Learning Companion",
+    "LOGIN_HEADING": "Login",
+    "REGISTER_HEADING": "Register",
+    "EMAIL": "Email",
+    "USERNAME": "Username",
+    "PASSWORD": "Password",
+    "LOGIN_BUTTON": "Login",
+    "REGISTER_BUTTON": "Register",
+    "LOGGING_IN": "Logging in...",
+    "REGISTERING": "Registering...",
+    "TOGGLE_TO_REGISTER": "Need an account? Register",
+    "TOGGLE_TO_LOGIN": "Already have an account? Login"
+  },
+  "NAVIGATION": {
+    "BACK": "Back",
+    "LOGOUT": "Logout"
   }
 }

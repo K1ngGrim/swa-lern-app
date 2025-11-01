@@ -1,13 +1,11 @@
 import { Routes } from "@angular/router";
-import { Home } from "./home/home";
-import { CreateNewDeckPage } from "./create-new-deck-page/create-new-deck-page";
-import { DeckPage } from "./deck-page/deck-page";
-import { StatisticsPage } from "./statistics-page/statistics-page";
+import { AuthGuard } from './auth.guard';
 
 export const routes: Routes = [
   { path: "", redirectTo: "home", pathMatch: "full" },
-  { path: "home", component: Home },
-  { path: "new-deck", component: CreateNewDeckPage },
-  { path: "decks", component: DeckPage },
-  { path: "statistics", component: StatisticsPage },
+  { path: "login", loadComponent: () => import("./login-page/login-page").then(m => m.LoginPage) },
+  { path: "home", loadComponent: () => import("./home/home").then(m => m.Home), canActivate: [AuthGuard] },
+  { path: "new-deck", loadComponent: () => import("./create-new-deck-page/create-new-deck-page").then(m => m.CreateNewDeckPage), canActivate: [AuthGuard] },
+  { path: "decks", loadComponent: () => import("./deck-page/deck-page").then(m => m.DeckPage), canActivate: [AuthGuard] },
+  { path: "statistics", loadComponent: () => import("./statistics-page/statistics-page").then(m => m.StatisticsPage), canActivate: [AuthGuard] },
 ];
