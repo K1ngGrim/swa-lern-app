@@ -8,6 +8,4 @@ public class CardService(
 )
 {
     
-    public async
-    
 }

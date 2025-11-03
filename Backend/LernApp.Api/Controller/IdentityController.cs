@@ -49,7 +49,12 @@ public class IdentityController(
 
         try
         {
-            await signInManager.PasswordSignInAsync(user, loginRequest.Password, true, false);
+            var res = await signInManager.PasswordSignInAsync(user, loginRequest.Password, true, false);
+
+            if (res.Succeeded)
+            {
+                return new LoginResponse();
+            }
         }
         catch (Exception e)
         {
@@ -57,7 +62,7 @@ public class IdentityController(
             throw;
         }
 
-        return new LoginResponse();
+        return new LoginResponse("Invalid username or password");
     }
 
     [HttpPost("register")]
