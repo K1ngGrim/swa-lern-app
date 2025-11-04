@@ -8,6 +8,7 @@ public partial class CoreContext
 
     public DbSet<CardEntity> Cards => Set<CardEntity>();
     public DbSet<DeckEntity> Decks => Set<DeckEntity>();
+    public DbSet<ProgressEntity> Progression => Set<ProgressEntity>();
 
     protected void OnLernCreating(ModelBuilder modelBuilder)
     {
@@ -37,6 +38,18 @@ public partial class CoreContext
                 .HasOne(d => d.User)
                 .WithMany(u => u.Decks)
                 .HasForeignKey(d => d.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        modelBuilder.Entity<ProgressEntity>(entity =>
+        {
+            entity.ToTable("progress");
+            entity.HasKey(x => x.ProgressId);
+            entity.Property(x => x.ProgressId).HasColumnName("progress_id");
+
+            entity
+                .HasOne(p => p.Card)
+                .WithOne(c => c.Progress)
                 .OnDelete(DeleteBehavior.Cascade);
         });
     }
