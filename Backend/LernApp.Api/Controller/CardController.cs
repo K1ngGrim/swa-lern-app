@@ -1,4 +1,7 @@
+using LernApp.Api.Models;
+using LernApp.Api.Models.Generic;
 using LernApp.Api.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LernApp.Api.Controller;
@@ -12,39 +15,65 @@ public class CardController(
 {
 
     [HttpGet]
-    public async Task<IActionResult> GetCards()
+    [Authorize]
+    public async Task<ActionResult<List<CardResponseModel>>> GetCards()
     {
-        throw new Exception("Not implemented");
+        return await cardService.GetCardsAsync(User);
+        
     }
 
     [HttpGet("{deckId}")]
-    public async Task<IActionResult> GetCardsByDeck([FromRoute] string deckId)
+    [Authorize]
+    public async Task<ActionResult<List<CardResponseModel>>> GetCardsByDeck([FromRoute] Guid deckId)
     {
-        throw new Exception("Not implemented");
+        return await cardService.GetCardsByDeckAsync(deckId, User);
     }
 
     [HttpGet("card/{cardId}")]
-    public async Task<IActionResult> GetCard([FromRoute] string cardId)
+    [Authorize]
+    public async Task<ActionResult<CardResponseModel>> GetCard([FromRoute] Guid cardId)
     {
-        throw new Exception("Not implemented");
+        return await cardService.GetCardAsync(cardId, User);
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateCard()
+    [Authorize]
+    public async Task<IActionResult> UpsertCard([FromBody] CreateRequest<CardCreateModel> request)
     {
-        throw new Exception("Not implemented");
-    }
+        try
+        {
+            if (request.EntityId == null)
+            {
+                var cardId = await cardService.CreateCardAsync(request.Data, User);
 
-    [HttpPut("{cardId}")]
-    public async Task<IActionResult> UpdateCard([FromRoute] string cardId)
-    {
-        throw new Exception("Not implemented");
+                return Created("Card created", cardId);
+            }
+
+            await cardService.UpdateCardAsync(request.EntityId.Value, request.Data, User);
+            return Ok("Card updated");
+        }
+        catch (Exception e)
+        {
+            logger.LogError(e, "Error creating card");
+            throw;
+        }
+        
     }
 
     [HttpDelete("{cardId}")]
-    public async Task<IActionResult> DeleteCard([FromRoute] string cardId)
+    [Authorize]
+    public async Task<IActionResult> DeleteCard([FromRoute] Guid cardId)
     {
-        throw new Exception("Not implemented");
+        try
+        {
+            await cardService.DeleteCardAsync(cardId, User);
+            return Ok();
+        }
+        catch (Exception e)
+        {
+            logger.LogError(e, "Error deleting card");
+            throw;
+        }
     }
 
 }
