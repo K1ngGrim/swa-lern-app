@@ -8,6 +8,8 @@ public class CardData : CardBase
 {
     [Column("card_id")]
     public Guid CardId { get; set; }
+
+    public CardState State { get; set; }
 }
 
 public class CardBase

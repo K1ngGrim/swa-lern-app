@@ -13,6 +13,28 @@ public class CardEntity : CardData, IBaseEntity
 
     [ForeignKey(nameof(DeckId))]
     public required DeckEntity Deck { get; set; }
-    
-    public ProgressEntity? Progress { get; set; }
+
+    //Learning Progress
+
+    public int Repetitions  { get; set; }
+    public double Interval { get; set; }
+
+    [Column("due_date")]
+    public DateTimeOffset DueDate { get; set; }
+
+}
+
+public enum CardState
+{
+    New,
+    Learning,
+    Review,
+    Relearning
+}
+
+public enum CardRating {
+    Again,
+    Hard,
+    Good,
+    Easy
 }

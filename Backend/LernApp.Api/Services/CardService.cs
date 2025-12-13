@@ -41,7 +41,8 @@ public class CardService(
                 Front = x.Front,
                 Title = x.Title,
                 CardId = x.CardId,
-                DeckId = x.DeckId
+                DeckId = x.DeckId,
+                State = x.State,
             })
             .ToListAsync();
         
@@ -84,7 +85,10 @@ public class CardService(
             Front = request.Front,
             Back = request.Back,
             DeckId = request.DeckId,
-            Deck = deck
+            Deck = deck,
+            DueDate = DateTimeOffset.UtcNow,
+            Created = DateTimeOffset.UtcNow,
+            CreatorId = invoker.UserId,
         };
         
         context.Cards.Add(card);

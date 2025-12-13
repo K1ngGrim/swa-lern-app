@@ -87,6 +87,7 @@ builder.Services.ConfigureApplicationCookie(options =>
 
 builder.Services.AddScoped<DeckService>();
 builder.Services.AddScoped<CardService>();
+builder.Services.AddScoped<LearningService>();
 
 builder.Services.AddAuthorization();
 
