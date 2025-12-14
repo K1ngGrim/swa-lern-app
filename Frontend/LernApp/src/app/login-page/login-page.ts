@@ -5,11 +5,12 @@ import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { AuthService } from '../auth.service';
 import { AccountCreateRequest, LoginRequest, LoginResponse, IdentityResponse } from 'api';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-login-page',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule, TranslateModule],
+  imports: [CommonModule, FormsModule, RouterModule, TranslateModule, MatIconModule],
   templateUrl: './login-page.html',
   styleUrl: './login-page.scss',
 })
@@ -63,7 +64,6 @@ export class LoginPage {
           console.log('Login response:', response);
           if (response.success) {
             this.loading = false;
-            // navigate to home after successful login
             this.router.navigate(['/home']);
           } else {
             this.loading = false;

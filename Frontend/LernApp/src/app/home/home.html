@@ -2,21 +2,23 @@
   <div class="page-header">
     <button (click)="logout()" class="logout-btn" aria-label="Logout">
       <svg class="logout-icon" viewBox="0 0 24 24" width="18" height="18">
-        <path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.59L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/>
+        <path
+          d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.59L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"
+        />
       </svg>
       {{ 'NAVIGATION.LOGOUT' | translate }}
     </button>
   </div>
 
-  <h1 class="welcome">{{ "HOME.WELCOME" | translate }}</h1>
-  <p class="subtitle">{{ "HOME.SUBTITLE" | translate }}</p>
+  <h1 class="welcome">{{ 'HOME.WELCOME' | translate }}</h1>
+  <p class="subtitle">{{ 'HOME.SUBTITLE' | translate }}</p>
 
   <section class="actions">
     <a class="action-link" routerLink="/new-deck" aria-label="{{ 'HOME.NEW_DECK' | translate }}">
       <mat-card class="action-card" role="button" tabindex="0">
         <div class="action-content">
           <mat-icon class="action-icon" aria-hidden="true">note_add</mat-icon>
-          <div class="action-label">{{ "HOME.NEW_DECK" | translate }}</div>
+          <div class="action-label">{{ 'HOME.NEW_DECK' | translate }}</div>
         </div>
       </mat-card>
     </a>
@@ -25,7 +27,7 @@
       <mat-card class="action-card" role="button" tabindex="0">
         <div class="action-content">
           <mat-icon class="action-icon" aria-hidden="true">folder_open</mat-icon>
-          <div class="action-label">{{ "HOME.VIEW_DECKS" | translate }}</div>
+          <div class="action-label">{{ 'HOME.VIEW_DECKS' | translate }}</div>
         </div>
       </mat-card>
     </a>
@@ -38,7 +40,7 @@
       <mat-card class="action-card" role="button" tabindex="0">
         <div class="action-content">
           <mat-icon class="action-icon" aria-hidden="true">analytics</mat-icon>
-          <div class="action-label">{{ "HOME.STATISTICS" | translate }}</div>
+          <div class="action-label">{{ 'HOME.STATISTICS' | translate }}</div>
         </div>
       </mat-card>
     </a>
