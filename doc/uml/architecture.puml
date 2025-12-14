@@ -2,7 +2,7 @@
 !theme plain
 
 ' Title and styling
-title SmartLearn - MVC Architecture Diagram
+title LernApp - MVC Architecture Diagram
 
 skinparam componentStyle rectangle
 skinparam linetype ortho
@@ -12,31 +12,33 @@ skinparam linetype ortho
 ' ============================================
 package "Frontend (View Layer)" as FrontendLayer #LightBlue {
     component "Angular Application" as AngularApp {
-        component "Home Component" as HomeComp
-        component "Deck Page Component" as DeckComp
-        component "Create Deck Component" as CreateDeckComp
-        component "Statistics Component" as StatsComp
-        component "Card Learning Component" as LearningComp
+        package "Pages (Standalone Components)" as Pages {
+            component "Home" as HomeComp
+            component "DeckPage" as DeckComp
+            component "CreateNewDeckPage" as CreateDeckComp
+            component "StatisticsPage" as StatsComp
+            component "LoginPage" as LoginComp
+        }
         
-        package "Services" as FrontendServices {
-            component "Deck Service" as DeckService
-            component "Card Service" as CardService
-            component "Progress Service" as ProgressService
-            component "Auth Service" as AuthService
+        package "Services" as AppServices {
+            component "AuthService" as AuthService
+            component "IdentityService" as IdentityService
+            component "DeckService" as DeckService
+            component "CardService" as CardService
         }
         
         package "UI Framework" as UIFramework {
             component "Angular Material" as AngularMaterial
-            component "Routing Module" as Routing
+            component "Router (Lazy Loading)" as Routing
         }
     }
     
     note right of AngularApp
         **Frontend Technologies:**
-        - Angular (TypeScript)
+        - Angular 20 (TypeScript, Standalone)
         - Angular Material
         - RxJS for reactive programming
-        - HTTP Client for API calls
+        - OpenAPI Generator for API client
     end note
 }
 
@@ -46,17 +48,22 @@ package "Frontend (View Layer)" as FrontendLayer #LightBlue {
 package "Backend (Controller Layer)" as BackendLayer #LightGreen {
     component "ASP.NET Core Web API" as WebAPI {
         package "Controllers" as Controllers {
-            component "UsersController" as UsersCtrl
-            component "DecksController" as DecksCtrl
-            component "CardsController" as CardsCtrl
+            component "IdentityController" as IdentityCtrl
+            component "DeckController" as DecksCtrl
+            component "CardController" as CardsCtrl
             component "ProgressController" as ProgressCtrl
-            component "AuthController" as AuthCtrl
+            component "TestController" as TestCtrl
         }
         
         package "Middleware" as Middleware {
-            component "Authentication" as AuthMiddleware
-            component "Error Handling" as ErrorMiddleware
-            component "CORS Policy" as CorsMiddleware
+            component "Cookie Authentication" as AuthMiddleware
+            component "Authorization" as AuthzMiddleware
+        }
+        
+        package "ASP.NET Identity" as IdentityPkg {
+            component "UserManager" as UserManager
+            component "SignInManager" as SignInManager
+            component "RoleManager" as RoleManager
         }
     }
     
@@ -64,7 +71,7 @@ package "Backend (Controller Layer)" as BackendLayer #LightGreen {
         **Backend Technologies:**
         - .NET 8 / ASP.NET Core
         - REST API architecture
-        - JWT Authentication
+        - Cookie Authentication (ASP.NET Identity)
         - Entity Framework Core
     end note
 }
@@ -74,110 +81,110 @@ package "Backend (Controller Layer)" as BackendLayer #LightGreen {
 ' ============================================
 package "Business Logic (Model Layer)" as ModelLayer #LightYellow {
     component "Service Layer" as ServiceLayer {
-        component "User Service" as UserService
-        component "Deck Service (BL)" as DeckServiceBL
-        component "Card Service (BL)" as CardServiceBL
-        component "Progress Service (BL)" as ProgressServiceBL
-        component "Learning Algorithm" as LearningAlgo
+        component "DeckService" as DeckServiceBL
+        component "CardService" as CardServiceBL
+        component "LearningService" as LearningServiceBL
     }
     
-    package "Domain Models" as DomainModels {
-        component "User Model" as UserModel
-        component "Deck Model" as DeckModel
-        component "Card Model" as CardModel
-        component "Progress Model" as ProgressModel
-    }
-    
-    package "DTOs" as DTOs {
-        component "Request DTOs" as RequestDTOs
-        component "Response DTOs" as ResponseDTOs
-    }
-    
-    note right of LearningAlgo
+    note right of LearningServiceBL
         **Spaced Repetition Algorithm:**
-        - Calculates next review date
-        - Adjusts difficulty based on user rating
-        - Implements SM-2 or similar algorithm
+        - Card states: New, Learning, Review, Relearning
+        - Rating: Again, Hard, Good, Easy
+        - Calculates next review date (DueDate)
+        - Adjusts interval based on user rating
     end note
+    
+    package "Domain Entities" as DomainModels {
+        component "IdentityUserEntity" as UserEntity
+        component "DeckEntity" as DeckEntity
+        component "CardEntity" as CardEntity
+    }
+    
+    package "Data Models" as DataModels {
+        component "CardData" as CardDataModel
+        component "DeckData" as DeckDataModel
+    }
+    
+    package "DTOs & Models" as DTOs {
+        component "Request Models" as RequestDTOs
+        component "Response Models" as ResponseDTOs
+        component "Invoker" as InvokerModel
+    }
 }
 
 ' ============================================
 ' DATA ACCESS LAYER
 ' ============================================
 package "Data Access Layer" as DataAccessLayer #LightCoral {
-    component "Repository Layer" as RepositoryLayer {
-        component "User Repository" as UserRepo
-        component "Deck Repository" as DeckRepo
-        component "Card Repository" as CardRepo
-        component "Progress Repository" as ProgressRepo
-    }
-    
     component "Entity Framework Core" as EFCore {
-        component "DbContext" as DbContext
+        component "CoreContext" as DbContext
         component "Migrations" as Migrations
     }
+    
+    note right of DbContext
+        **CoreContext (partial class):**
+        - CoreContext.cs (base)
+        - CoreContext.Identity.cs
+        - CoreContext.LernApp.cs
+    end note
 }
 
 ' ============================================
 ' DATA STORAGE LAYER (Database)
 ' ============================================
 database "Database" as Database #LightGray {
-    storage "SQLite / PostgreSQL" as DB {
-        component "AspNetUsers Table" as UsersTable
-        component "Decks Table" as DecksTable
-        component "Cards Table" as CardsTable
-        component "Progress Table" as ProgressTable
+    storage "PostgreSQL" as DB {
+        package "identity schema" as IdentitySchema {
+            component "Users" as UsersTable
+            component "Roles" as RolesTable
+            component "UserRoles" as UserRolesTable
+        }
+        package "core schema" as CoreSchema {
+            component "deck" as DecksTable
+            component "card" as CardsTable
+        }
     }
 }
 
 ' ============================================
 ' RELATIONSHIPS - Frontend to Backend
 ' ============================================
-HomeComp -down-> DeckService : uses
-DeckComp -down-> DeckService : uses
-DeckComp -down-> CardService : uses
-CreateDeckComp -down-> DeckService : uses
-StatsComp -down-> ProgressService : uses
-LearningComp -down-> CardService : uses
-LearningComp -down-> ProgressService : uses
+LoginComp --> AuthService : uses
+AuthService --> IdentityService
+HomeComp --> AuthService
+DeckComp --> DeckService
+DeckComp --> AuthService
+CreateDeckComp --> AuthService
+StatsComp --> AuthService
 
 DeckService -down-> WebAPI : HTTP/REST
-CardService -down-> WebAPI : HTTP/REST
-ProgressService -down-> WebAPI : HTTP/REST
-AuthService -down-> WebAPI : HTTP/REST
+CardService -down-> WebAPI
+IdentityService -down-> WebAPI
 
 ' ============================================
 ' RELATIONSHIPS - Backend to Business Logic
 ' ============================================
-UsersCtrl -down-> UserService : calls
-DecksCtrl -down-> DeckServiceBL : calls
-CardsCtrl -down-> CardServiceBL : calls
-ProgressCtrl -down-> ProgressServiceBL : calls
-ProgressCtrl -down-> LearningAlgo : uses
+IdentityCtrl --> UserManager : uses
+IdentityCtrl --> SignInManager
+DecksCtrl --> DeckServiceBL : calls
+CardsCtrl --> CardServiceBL
+ProgressCtrl --> LearningServiceBL
 
 ' ============================================
 ' RELATIONSHIPS - Business Logic to Data Access
 ' ============================================
-UserService -down-> UserRepo : uses
-DeckServiceBL -down-> DeckRepo : uses
-CardServiceBL -down-> CardRepo : uses
-ProgressServiceBL -down-> ProgressRepo : uses
-LearningAlgo -down-> ProgressRepo : reads/writes
+DeckServiceBL --> DbContext : uses
+CardServiceBL --> DbContext
+LearningServiceBL --> DbContext
 
-UserService -down-> UserModel : manages
-DeckServiceBL -down-> DeckModel : manages
-CardServiceBL -down-> CardModel : manages
-ProgressServiceBL -down-> ProgressModel : manages
+DeckServiceBL --> DeckEntity : manages
+CardServiceBL --> CardEntity
+LearningServiceBL --> CardEntity
 
 ' ============================================
 ' RELATIONSHIPS - Data Access to Database
 ' ============================================
-UserRepo -down-> DbContext : uses
-DeckRepo -down-> DbContext : uses
-CardRepo -down-> DbContext : uses
-ProgressRepo -down-> DbContext : uses
-
-DbContext -down-> DB : queries/updates
+DbContext -down-> Database : queries/updates
 
 ' ============================================
 ' LEGEND
@@ -193,8 +200,8 @@ legend right
     
     **Communication:**
     - Frontend ↔ Backend: REST API (HTTP/JSON)
-    - Backend ↔ Database: Entity Framework Core
-    - All layers follow dependency inversion principle
+    - Backend ↔ Database: Entity Framework Core (direct, no repository)
+    - Authentication: Cookie-based (ASP.NET Identity)
 endlegend
 
 @enduml
