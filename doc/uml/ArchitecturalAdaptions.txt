@@ -1,0 +1,54 @@
+Controllers (Diagram vs Reality):
+
+UsersController → Actually IdentityController
+AuthController → Does NOT exist (authentication is in IdentityController)
+DecksController → Actually DeckController
+CardsController → Actually CardController
+ProgressController → Actually exists but routes to LearningService
+TestController → Missing from diagram
+Services (Diagram vs Reality):
+
+UserService → Does NOT exist (handled via ASP.NET Identity)
+Deck Service (BL) → Actually DeckService
+Card Service (BL) → Actually CardService
+Progress Service (BL) → Actually LearningService
+Learning Algorithm → Integrated into LearningService (not separate)
+Data Access Layer:
+
+Repository Layer → Does NOT exist! Services use CoreContext directly
+Entity Framework Core (DbContext) → Exists as CoreContext
+Database:
+
+SQLite → Actually PostgreSQL (Npgsql)
+AspNetUsers Table → Actually identity.Users
+Authentication:
+
+JWT Authentication → Actually Cookie-based authentication
+
+Discrepancies Between Diagram and Actual Frontend Implementation:
+Components (Diagram vs Reality):
+
+Home Component → Actually class Home
+Deck Page Component → Actually class DeckPage
+Create Deck Component → Actually class CreateNewDeckPage
+Statistics Component → Actually class StatisticsPage
+Card Learning Component → Does NOT exist! No card learning component found
+LoginPage → Missing from diagram (important for auth flow)
+Services (Diagram vs Reality):
+
+Learning Service → Does NOT exist in frontend (no learning/progress service)
+Deck Service / Card Service → These are auto-generated API services from OpenAPI, not custom services
+Auth Service → Exists (wraps IdentityService from generated API)
+UI Framework:
+
+Angular Material → Used
+Routing Module → Uses standalone routes with lazy loading
+@ngx-translate → Translation library used but not in diagram
+AuthGuard → Route guard for protected pages
+API Layer (New discovery):
+
+The frontend has an auto-generated API library at projects/api with:
+IdentityService (generated)
+DeckService (generated)
+CardService (generated)
+TestService (generated)
