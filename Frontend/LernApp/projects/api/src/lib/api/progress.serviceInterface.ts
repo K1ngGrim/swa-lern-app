@@ -13,24 +13,23 @@ import { HttpHeaders }                                       from '@angular/comm
 
 import { Observable }                                        from 'rxjs';
 
-import { CreateRequestOfDeckCreateModel } from '../model/models';
-import { DeckDetailResponseModel } from '../model/models';
-import { ListResponseOfDeckResponseModel } from '../model/models';
+import { LearningSessionResponse } from '../model/models';
 
 
 import { Configuration }                                     from '../configuration';
 
 
-export interface ApiDecksDeckIdGetRequestParams {
+export interface ApiLearningSessionDeckIdGetRequestParams {
     deckId: string;
 }
 
-export interface ApiDecksPostRequestParams {
-    createRequestOfDeckCreateModel: CreateRequestOfDeckCreateModel;
+export interface ApiLearningUpdateCardIdPostRequestParams {
+    cardId: string;
+    rating?: number;
 }
 
 
-export interface DeckServiceInterface {
+export interface ProgressServiceInterface {
     defaultHeaders: HttpHeaders;
     configuration: Configuration;
 
@@ -39,19 +38,13 @@ export interface DeckServiceInterface {
      * 
 * @param requestParameters
      */
-    apiDecksDeckIdGet(requestParameters: ApiDecksDeckIdGetRequestParams, extraHttpRequestParams?: any): Observable<DeckDetailResponseModel>;
-
-    /**
-     * 
-     * 
-*/
-    apiDecksGet(extraHttpRequestParams?: any): Observable<ListResponseOfDeckResponseModel>;
+    apiLearningSessionDeckIdGet(requestParameters: ApiLearningSessionDeckIdGetRequestParams, extraHttpRequestParams?: any): Observable<LearningSessionResponse>;
 
     /**
      * 
      * 
 * @param requestParameters
      */
-    apiDecksPost(requestParameters: ApiDecksPostRequestParams, extraHttpRequestParams?: any): Observable<{}>;
+    apiLearningUpdateCardIdPost(requestParameters: ApiLearningUpdateCardIdPostRequestParams, extraHttpRequestParams?: any): Observable<{}>;
 
 }

@@ -9,6 +9,8 @@ api/deck.service.ts
 api/deck.serviceInterface.ts
 api/identity.service.ts
 api/identity.serviceInterface.ts
+api/progress.service.ts
+api/progress.serviceInterface.ts
 api/test.service.ts
 api/test.serviceInterface.ts
 configuration.ts
@@ -17,10 +19,16 @@ git_push.sh
 index.ts
 model/account-create-request.ts
 model/auth-result.ts
+model/card-create-model.ts
+model/card-data.ts
+model/card-response-model.ts
+model/create-request-of-card-create-model.ts
 model/create-request-of-deck-create-model.ts
 model/deck-create-model.ts
+model/deck-detail-response-model.ts
 model/deck-response-model.ts
 model/identity-response.ts
+model/learning-session-response.ts
 model/list-response-of-deck-response-model.ts
 model/login-request.ts
 model/login-response.ts

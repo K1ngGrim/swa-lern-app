@@ -13,6 +13,8 @@ import { HttpHeaders }                                       from '@angular/comm
 
 import { Observable }                                        from 'rxjs';
 
+import { CardResponseModel } from '../model/models';
+import { CreateRequestOfCardCreateModel } from '../model/models';
 
 
 import { Configuration }                                     from '../configuration';
@@ -26,12 +28,12 @@ export interface ApiCardsCardIdDeleteRequestParams {
     cardId: string;
 }
 
-export interface ApiCardsCardIdPutRequestParams {
-    cardId: string;
-}
-
 export interface ApiCardsDeckIdGetRequestParams {
     deckId: string;
+}
+
+export interface ApiCardsPostRequestParams {
+    createRequestOfCardCreateModel: CreateRequestOfCardCreateModel;
 }
 
 
@@ -44,7 +46,7 @@ export interface CardServiceInterface {
      * 
 * @param requestParameters
      */
-    apiCardsCardCardIdGet(requestParameters: ApiCardsCardCardIdGetRequestParams, extraHttpRequestParams?: any): Observable<{}>;
+    apiCardsCardCardIdGet(requestParameters: ApiCardsCardCardIdGetRequestParams, extraHttpRequestParams?: any): Observable<CardResponseModel>;
 
     /**
      * 
@@ -58,25 +60,19 @@ export interface CardServiceInterface {
      * 
 * @param requestParameters
      */
-    apiCardsCardIdPut(requestParameters: ApiCardsCardIdPutRequestParams, extraHttpRequestParams?: any): Observable<{}>;
+    apiCardsDeckIdGet(requestParameters: ApiCardsDeckIdGetRequestParams, extraHttpRequestParams?: any): Observable<Array<CardResponseModel>>;
+
+    /**
+     * 
+     * 
+*/
+    apiCardsGet(extraHttpRequestParams?: any): Observable<Array<CardResponseModel>>;
 
     /**
      * 
      * 
 * @param requestParameters
      */
-    apiCardsDeckIdGet(requestParameters: ApiCardsDeckIdGetRequestParams, extraHttpRequestParams?: any): Observable<{}>;
-
-    /**
-     * 
-     * 
-*/
-    apiCardsGet(extraHttpRequestParams?: any): Observable<{}>;
-
-    /**
-     * 
-     * 
-*/
-    apiCardsPost(extraHttpRequestParams?: any): Observable<{}>;
+    apiCardsPost(requestParameters: ApiCardsPostRequestParams, extraHttpRequestParams?: any): Observable<{}>;
 
 }

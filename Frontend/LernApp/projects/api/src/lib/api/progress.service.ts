@@ -19,27 +19,23 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 // @ts-ignore
-import { CreateRequestOfDeckCreateModel } from '../model/create-request-of-deck-create-model';
-// @ts-ignore
-import { DeckDetailResponseModel } from '../model/deck-detail-response-model';
-// @ts-ignore
-import { ListResponseOfDeckResponseModel } from '../model/list-response-of-deck-response-model';
+import { LearningSessionResponse } from '../model/learning-session-response';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
 import {
-    DeckServiceInterface,
-    ApiDecksDeckIdGetRequestParams,
-    ApiDecksPostRequestParams
-} from './deck.serviceInterface';
+    ProgressServiceInterface,
+    ApiLearningSessionDeckIdGetRequestParams,
+    ApiLearningUpdateCardIdPostRequestParams
+} from './progress.serviceInterface';
 
 
 
 @Injectable({
   providedIn: 'root'
 })
-export class DeckService implements DeckServiceInterface {
+export class ProgressService implements ProgressServiceInterface {
 
     protected basePath = 'http://localhost:5001';
     public defaultHeaders = new HttpHeaders();
@@ -105,13 +101,13 @@ export class DeckService implements DeckServiceInterface {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiDecksDeckIdGet(requestParameters: ApiDecksDeckIdGetRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<DeckDetailResponseModel>;
-    public apiDecksDeckIdGet(requestParameters: ApiDecksDeckIdGetRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<DeckDetailResponseModel>>;
-    public apiDecksDeckIdGet(requestParameters: ApiDecksDeckIdGetRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<DeckDetailResponseModel>>;
-    public apiDecksDeckIdGet(requestParameters: ApiDecksDeckIdGetRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public apiLearningSessionDeckIdGet(requestParameters: ApiLearningSessionDeckIdGetRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<LearningSessionResponse>;
+    public apiLearningSessionDeckIdGet(requestParameters: ApiLearningSessionDeckIdGetRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<LearningSessionResponse>>;
+    public apiLearningSessionDeckIdGet(requestParameters: ApiLearningSessionDeckIdGetRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<LearningSessionResponse>>;
+    public apiLearningSessionDeckIdGet(requestParameters: ApiLearningSessionDeckIdGetRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         const deckId = requestParameters.deckId;
         if (deckId === null || deckId === undefined) {
-            throw new Error('Required parameter deckId was null or undefined when calling apiDecksDeckIdGet.');
+            throw new Error('Required parameter deckId was null or undefined when calling apiLearningSessionDeckIdGet.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -152,69 +148,8 @@ export class DeckService implements DeckServiceInterface {
             }
         }
 
-        let localVarPath = `/api/decks/${this.configuration.encodeParam({name: "deckId", value: deckId, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: "uuid"})}`;
-        return this.httpClient.request<DeckDetailResponseModel>('get', `${this.configuration.basePath}${localVarPath}`,
-            {
-                context: localVarHttpContext,
-                responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
-                headers: localVarHeaders,
-                observe: observe,
-                transferCache: localVarTransferCache,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public apiDecksGet(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<ListResponseOfDeckResponseModel>;
-    public apiDecksGet(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<ListResponseOfDeckResponseModel>>;
-    public apiDecksGet(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<ListResponseOfDeckResponseModel>>;
-    public apiDecksGet(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
-
-        let localVarHeaders = this.defaultHeaders;
-
-        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (localVarHttpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = [
-                'text/plain',
-                'application/json',
-                'text/json'
-            ];
-            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        }
-        if (localVarHttpHeaderAcceptSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
-        }
-
-        let localVarHttpContext: HttpContext | undefined = options && options.context;
-        if (localVarHttpContext === undefined) {
-            localVarHttpContext = new HttpContext();
-        }
-
-        let localVarTransferCache: boolean | undefined = options && options.transferCache;
-        if (localVarTransferCache === undefined) {
-            localVarTransferCache = true;
-        }
-
-
-        let responseType_: 'text' | 'json' | 'blob' = 'json';
-        if (localVarHttpHeaderAcceptSelected) {
-            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
-                responseType_ = 'text';
-            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
-                responseType_ = 'json';
-            } else {
-                responseType_ = 'blob';
-            }
-        }
-
-        let localVarPath = `/api/decks`;
-        return this.httpClient.request<ListResponseOfDeckResponseModel>('get', `${this.configuration.basePath}${localVarPath}`,
+        let localVarPath = `/api/learning/session/${this.configuration.encodeParam({name: "deckId", value: deckId, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: "uuid"})}`;
+        return this.httpClient.request<LearningSessionResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
@@ -232,13 +167,20 @@ export class DeckService implements DeckServiceInterface {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiDecksPost(requestParameters: ApiDecksPostRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<any>;
-    public apiDecksPost(requestParameters: ApiDecksPostRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<any>>;
-    public apiDecksPost(requestParameters: ApiDecksPostRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<any>>;
-    public apiDecksPost(requestParameters: ApiDecksPostRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<any> {
-        const createRequestOfDeckCreateModel = requestParameters.createRequestOfDeckCreateModel;
-        if (createRequestOfDeckCreateModel === null || createRequestOfDeckCreateModel === undefined) {
-            throw new Error('Required parameter createRequestOfDeckCreateModel was null or undefined when calling apiDecksPost.');
+    public apiLearningUpdateCardIdPost(requestParameters: ApiLearningUpdateCardIdPostRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<any>;
+    public apiLearningUpdateCardIdPost(requestParameters: ApiLearningUpdateCardIdPostRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<any>>;
+    public apiLearningUpdateCardIdPost(requestParameters: ApiLearningUpdateCardIdPostRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<any>>;
+    public apiLearningUpdateCardIdPost(requestParameters: ApiLearningUpdateCardIdPostRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<any> {
+        const cardId = requestParameters.cardId;
+        if (cardId === null || cardId === undefined) {
+            throw new Error('Required parameter cardId was null or undefined when calling apiLearningUpdateCardIdPost.');
+        }
+        const rating = requestParameters.rating;
+
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+        if (rating !== undefined && rating !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>rating, 'rating');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -265,17 +207,6 @@ export class DeckService implements DeckServiceInterface {
         }
 
 
-        // to determine the Content-Type header
-        const consumes: string[] = [
-            'application/json',
-            'text/json',
-            'application/*+json'
-        ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set('Content-Type', httpContentTypeSelected);
-        }
-
         let responseType_: 'text' | 'json' | 'blob' = 'json';
         if (localVarHttpHeaderAcceptSelected) {
             if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
@@ -287,11 +218,11 @@ export class DeckService implements DeckServiceInterface {
             }
         }
 
-        let localVarPath = `/api/decks`;
+        let localVarPath = `/api/learning/update/${this.configuration.encodeParam({name: "cardId", value: cardId, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: "uuid"})}`;
         return this.httpClient.request<any>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: createRequestOfDeckCreateModel,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
