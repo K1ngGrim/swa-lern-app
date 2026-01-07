@@ -15,5 +15,42 @@
 </div>
 
 <main class="page-content">
-  <p>create-new-deck-page works!</p>
+  <div class="form-container">
+    <h1>{{ 'DECK_CREATE.TITLE' | translate }}</h1>
+
+    <!-- Success Message -->
+    <div *ngIf="successMessage()" class="alert alert-success">
+      {{ successMessage() | translate }}
+    </div>
+
+    <!-- Error Message -->
+    <div *ngIf="errorMessage()" class="alert alert-error">
+      {{ errorMessage() | translate }}
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="deck-form">
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>{{ 'DECK_CREATE.NAME_LABEL' | translate }}</mat-label>
+        <input matInput formControlName="name" />
+        <mat-error *ngIf="form.get('name')?.hasError('required')">
+          {{ 'DECK_CREATE.NAME_REQUIRED' | translate }}
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>{{ 'DECK_CREATE.DESCRIPTION_LABEL' | translate }}</mat-label>
+        <textarea matInput formControlName="description" rows="4"></textarea>
+      </mat-form-field>
+
+      <div class="form-actions">
+        <button
+          type="submit"
+          [disabled]="isSubmitting() || form.invalid"
+          class="submit-btn"
+        >
+          {{ isSubmitting() ? ('DECK_CREATE.CREATING' | translate) : ('DECK_CREATE.CREATE_BUTTON' | translate) }}
+        </button>
+      </div>
+    </form>
+  </div>
 </main>

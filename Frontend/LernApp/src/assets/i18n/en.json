@@ -25,5 +25,15 @@
   "NAVIGATION": {
     "BACK": "Back",
     "LOGOUT": "Logout"
+  },
+  "DECK_CREATE": {
+    "TITLE": "Create New Deck",
+    "NAME_LABEL": "Deck Name",
+    "NAME_REQUIRED": "Deck name is required",
+    "DESCRIPTION_LABEL": "Description (Optional)",
+    "CREATE_BUTTON": "Create Deck",
+    "CREATING": "Creating...",
+    "SUCCESS_MESSAGE": "Deck created successfully!",
+    "ERROR_MESSAGE": "Failed to create deck. Please try again."
   }
 }

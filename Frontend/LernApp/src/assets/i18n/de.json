@@ -25,5 +25,15 @@
   "NAVIGATION": {
     "BACK": "Zurück",
     "LOGOUT": "Abmelden"
+  },
+  "DECK_CREATE": {
+    "TITLE": "Neues Deck erstellen",
+    "NAME_LABEL": "Deck Name",
+    "NAME_REQUIRED": "Deck Name ist erforderlich",
+    "DESCRIPTION_LABEL": "Beschreibung (Optional)",
+    "CREATE_BUTTON": "Deck erstellen",
+    "CREATING": "Wird erstellt...",
+    "SUCCESS_MESSAGE": "Deck erfolgreich erstellt!",
+    "ERROR_MESSAGE": "Fehler beim Erstellen des Decks. Bitte versuchen Sie es erneut."
   }
 }
