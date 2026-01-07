@@ -58,9 +58,9 @@
   width: 100%;
   max-width: 600px;
   padding: 2rem;
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
 }
 
 h1 {
@@ -109,67 +109,46 @@ h1 {
 
 .form-field {
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
 
-  ::ng-deep {
-    .mat-mdc-form-field-error {
-      font-size: 0.75rem;
-      margin-top: 0.25rem;
-    }
+.form-field label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #555;
+}
 
-    .mat-mdc-input-element {
-      padding: 0.75rem 0.5rem !important;
+.form-field input,
+.form-field textarea {
+  width: 100%;
+  padding: 0.6rem 0.75rem;
+  border-radius: 8px;
+  border: 1px solid #d0d7de;
+  font-size: 0.95rem;
+}
 
-      &::placeholder {
-        opacity: 0.7 !important;
-        color: rgba(0, 0, 0, 0.7);
-      }
-    }
+.form-field textarea {
+  min-height: 90px;
+  resize: vertical;
+}
 
-    textarea.mat-mdc-input-element {
-      border: 0 !important;
-      outline: 0 !important;
-      box-shadow: none !important;
-      background: transparent !important;
-      resize: vertical;
-      min-height: 100px;
+.form-field input:focus,
+.form-field textarea:focus {
+  outline: none;
+  border-color: var(--app-primary, #2563eb);
+  box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.1);
+}
 
-      &:focus {
-        border: 0 !important;
-        outline: 0 !important;
-        box-shadow: none !important;
-      }
+.form-field input.invalid {
+  border-color: #b91c1c;
+}
 
-      &::-webkit-scrollbar {
-        width: 8px;
-      }
-
-      &::-webkit-scrollbar-track {
-        background: rgba(0, 0, 0, 0.05);
-        border-radius: 4px;
-      }
-
-      &::-webkit-scrollbar-thumb {
-        background: rgba(0, 0, 0, 0.2);
-        border-radius: 4px;
-
-        &:hover {
-          background: rgba(0, 0, 0, 0.3);
-        }
-      }
-    }
-
-    .mdc-text-field {
-      padding: 0 !important;
-    }
-
-    .mdc-text-field--filled,
-    .mdc-text-field--outlined {
-      .mat-mdc-form-field-infix {
-        padding: 0 !important;
-        border: 0 !important;
-      }
-    }
-  }
+.field-error {
+  margin: 0.15rem 0 0;
+  font-size: 0.8rem;
+  color: #b91c1c;
 }
 
 .form-actions {

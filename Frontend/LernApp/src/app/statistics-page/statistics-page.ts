@@ -18,7 +18,7 @@ export class StatisticsPage {
   ) {}
 
   goBack() {
-    this.location.back();
+    this.router.navigate(['/home']);
   }
 
   logout() {

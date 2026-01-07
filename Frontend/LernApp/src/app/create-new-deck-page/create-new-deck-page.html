@@ -29,18 +29,27 @@
     </div>
 
     <form [formGroup]="form" (ngSubmit)="onSubmit()" class="deck-form">
-      <mat-form-field appearance="outline" class="form-field">
-        <mat-label>{{ 'DECK_CREATE.NAME_LABEL' | translate }}</mat-label>
-        <input matInput formControlName="name" />
-        <mat-error *ngIf="form.get('name')?.hasError('required')">
+      <div class="form-field">
+        <label for="deck-name">{{ 'DECK_CREATE.NAME_LABEL' | translate }}</label>
+        <input
+          id="deck-name"
+          type="text"
+          formControlName="name"
+          [class.invalid]="form.get('name')?.invalid && form.get('name')?.touched"
+        />
+        <p class="field-error" *ngIf="form.get('name')?.hasError('required') && form.get('name')?.touched">
           {{ 'DECK_CREATE.NAME_REQUIRED' | translate }}
-        </mat-error>
-      </mat-form-field>
+        </p>
+      </div>
 
-      <mat-form-field appearance="outline" class="form-field">
-        <mat-label>{{ 'DECK_CREATE.DESCRIPTION_LABEL' | translate }}</mat-label>
-        <textarea matInput formControlName="description" rows="4"></textarea>
-      </mat-form-field>
+      <div class="form-field">
+        <label for="deck-description">{{ 'DECK_CREATE.DESCRIPTION_LABEL' | translate }}</label>
+        <textarea
+          id="deck-description"
+          rows="4"
+          formControlName="description"
+        ></textarea>
+      </div>
 
       <div class="form-actions">
         <button

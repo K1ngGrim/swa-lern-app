@@ -3,8 +3,6 @@ import { Router } from "@angular/router";
 import { Location } from "@angular/common";
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from "@angular/forms";
 import { CommonModule } from "@angular/common";
-import { MatFormFieldModule } from "@angular/material/form-field";
-import { MatInputModule } from "@angular/material/input";
 import { AuthService } from "../auth.service";
 import { TranslateModule } from "@ngx-translate/core";
 import { DeckService } from "../../../projects/api/src/lib/api/deck.service";
@@ -17,8 +15,6 @@ import { DeckCreateModel, CreateRequestOfDeckCreateModel } from "../../../projec
     CommonModule,
     TranslateModule,
     ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
   ],
   templateUrl: "./create-new-deck-page.html",
   styleUrl: "./create-new-deck-page.scss",
@@ -70,7 +66,7 @@ export class CreateNewDeckPage {
         this.successMessage.set('DECK_CREATE.SUCCESS_MESSAGE');
         setTimeout(() => {
           this.router.navigate(['/home']);
-        }, 2000);
+        }, 1000);
       },
       error: (err) => {
         console.error('Error creating deck:', err);
@@ -81,7 +77,7 @@ export class CreateNewDeckPage {
   }
 
   goBack() {
-    this.location.back();
+    this.router.navigate(['/home']);
   }
 
   logout() {

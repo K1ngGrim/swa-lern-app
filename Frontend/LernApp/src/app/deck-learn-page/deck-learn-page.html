@@ -1,0 +1,91 @@
+<div class="page-header">
+  <button (click)="goBack()" class="back-btn" aria-label="Go back">
+    <svg class="back-icon" viewBox="0 0 24 24" width="18" height="18">
+      <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" />
+    </svg>
+    {{ 'NAVIGATION.BACK' | translate }}
+  </button>
+
+  <button (click)="logout()" class="logout-btn" aria-label="Logout">
+    <svg class="logout-icon" viewBox="0 0 24 24" width="18" height="18">
+      <path
+        d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.59L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"
+      />
+    </svg>
+    {{ 'NAVIGATION.LOGOUT' | translate }}
+  </button>
+</div>
+
+<main class="page-content">
+  <div class="content-container">
+    <h1 *ngIf="deck() as currentDeck; else genericLearnTitle">
+      {{ currentDeck.name }}
+    </h1>
+    <ng-template #genericLearnTitle>
+      <h1>{{ 'DECK_LEARN.TITLE' | translate }}</h1>
+    </ng-template>
+
+    <!-- Loading / Error / Empty States -->
+    <p class="status" *ngIf="isLoading()">
+      {{ 'DECK_LEARN.LOADING' | translate }}
+    </p>
+    <p class="status error" *ngIf="!isLoading() && error() as errorKey">
+      {{ errorKey | translate }}
+    </p>
+
+    <ng-container *ngIf="!isLoading() && !error()">
+      <ng-container *ngIf="!sessionCompleted(); else completed">
+        <ng-container *ngIf="currentCard as card; else noCards">
+          <div class="card-container" (click)="onCardClick()">
+            <div class="card-inner" [class.flipped]="showBack()">
+              <p class="card-text face front" [class.visible]="!showBack()">
+                {{ card.front }}
+              </p>
+              <p class="card-text face back" [class.visible]="showBack()">
+                {{ card.back }}
+              </p>
+            </div>
+          </div>
+
+          <div class="ratings" [class.visible]="showBack()">
+            <button class="rating-btn again" (click)="rateCard(1)" [disabled]="isSubmittingRating()">
+              {{ 'DECK_LEARN.RATING_AGAIN' | translate }}
+            </button>
+            <button class="rating-btn hard" (click)="rateCard(2)" [disabled]="isSubmittingRating()">
+              {{ 'DECK_LEARN.RATING_HARD' | translate }}
+            </button>
+            <button class="rating-btn good" (click)="rateCard(3)" [disabled]="isSubmittingRating()">
+              {{ 'DECK_LEARN.RATING_GOOD' | translate }}
+            </button>
+            <button class="rating-btn easy" (click)="rateCard(4)" [disabled]="isSubmittingRating()">
+              {{ 'DECK_LEARN.RATING_EASY' | translate }}
+            </button>
+          </div>
+
+          <p class="progress" *ngIf="session()?.cards?.length as total">
+            {{ 'DECK_LEARN.PROGRESS' | translate: { current: currentIndex() + 1, total: total } }}
+          </p>
+        </ng-container>
+
+        <ng-template #noCards>
+          <p class="placeholder">{{ 'DECK_LEARN.NO_CARDS' | translate }}</p>
+        </ng-template>
+      </ng-container>
+
+      <ng-template #completed>
+        <div class="complete-state">
+          <h2>{{ 'DECK_LEARN.COMPLETED_TITLE' | translate }}</h2>
+          <p>{{ 'DECK_LEARN.COMPLETED_MESSAGE' | translate }}</p>
+          <div class="complete-actions">
+            <button class="secondary-btn" (click)="goToDeck()">
+              {{ 'DECK_LEARN.BACK_TO_DECK' | translate }}
+            </button>
+            <button class="primary-btn" (click)="restartSession()">
+              {{ 'DECK_LEARN.RESTART' | translate }}
+            </button>
+          </div>
+        </div>
+      </ng-template>
+    </ng-container>
+  </div>
+</main>
