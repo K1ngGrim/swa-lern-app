@@ -33,16 +33,16 @@
           </div>
 
           <div class="ratings" [class.visible]="showBack()">
-            <button class="rating-btn again" (click)="rateCard(1)" [disabled]="isSubmittingRating()">
+            <button class="rating-btn again" (click)="rateCard(0)" [disabled]="isSubmittingRating()">
               {{ 'DECK_LEARN.RATING_AGAIN' | translate }}
             </button>
-            <button class="rating-btn hard" (click)="rateCard(2)" [disabled]="isSubmittingRating()">
+            <button class="rating-btn hard" (click)="rateCard(1)" [disabled]="isSubmittingRating()">
               {{ 'DECK_LEARN.RATING_HARD' | translate }}
             </button>
-            <button class="rating-btn good" (click)="rateCard(3)" [disabled]="isSubmittingRating()">
+            <button class="rating-btn good" (click)="rateCard(2)" [disabled]="isSubmittingRating()">
               {{ 'DECK_LEARN.RATING_GOOD' | translate }}
             </button>
-            <button class="rating-btn easy" (click)="rateCard(4)" [disabled]="isSubmittingRating()">
+            <button class="rating-btn easy" (click)="rateCard(3)" [disabled]="isSubmittingRating()">
               {{ 'DECK_LEARN.RATING_EASY' | translate }}
             </button>
           </div>
