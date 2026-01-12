@@ -92,7 +92,7 @@
     "COMPLETED_TITLE": "Session complete",
     "COMPLETED_MESSAGE": "You have reviewed all cards in this deck for now.",
     "BACK_TO_DECK": "Back to decks",
-    "RESTART": "Review again",
+    "RESTART": "Continue Learning",
     "NO_CARDS": "There are no cards ready to learn in this deck yet."
   }
 }
