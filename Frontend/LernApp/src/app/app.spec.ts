@@ -13,4 +13,14 @@ describe("App", () => {
     const app = fixture.componentInstance;
     expect(app).toBeTruthy();
   });
+
+  it("should select the current language in the switcher", () => {
+    const fixture = TestBed.createComponent(App);
+    const app = fixture.componentInstance;
+    app.currentLang.set('de');
+    fixture.detectChanges();
+    const select: HTMLSelectElement | null = fixture.nativeElement.querySelector('.lang-select');
+    expect(select).toBeTruthy();
+    expect(select!.value).toBe('de');
+  });
 });

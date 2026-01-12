@@ -17,14 +17,13 @@
     <div class="right-actions">
       <select
         class="lang-select"
-        [value]="currentLang()"
         (change)="onLanguageChange($event)"
         aria-label="Language"
       >
         @for (lang of languages; track lang) {
-          <option [value]="lang">
-        {{ lang.toUpperCase() }}
-      </option>
+          <option [value]="lang" [selected]="currentLang() === lang">
+            {{ lang.toUpperCase() }}
+          </option>
         }
       </select>
 
