@@ -1,3 +1,64 @@
 <main class="page-content">
-  <p>statistics-page works!</p>
+  <div class="content-container">
+    <h1>{{ 'STATISTICS.TITLE' | translate }}</h1>
+
+    <div *ngIf="isLoading()" class="loading">
+      {{ 'STATISTICS.LOADING' | translate }}
+    </div>
+
+    <div *ngIf="error() && !isLoading()" class="alert alert-error">
+      {{ error() | translate }}
+    </div>
+
+    <ng-container *ngIf="!isLoading() && !error()">
+      <!-- Stats Cards -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-value">{{ decks().length }}</div>
+          <div class="stat-label">{{ 'STATISTICS.TOTAL_DECKS' | translate }}</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">{{ totalCards() }}</div>
+          <div class="stat-label">{{ 'STATISTICS.TOTAL_CARDS' | translate }}</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">{{ getStudiedToday() }}</div>
+          <div class="stat-label">{{ 'STATISTICS.STUDIED_TODAY' | translate }}</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">{{ getStudiedThisWeek() }}</div>
+          <div class="stat-label">{{ 'STATISTICS.STUDIED_THIS_WEEK' | translate }}</div>
+        </div>
+      </div>
+
+      <!-- Empty State -->
+      <div *ngIf="deckStats().length === 0" class="empty-state">
+        <p>{{ 'STATISTICS.NO_DECKS' | translate }}</p>
+      </div>
+
+      <!-- Deck Breakdown -->
+      <div *ngIf="deckStats().length > 0" class="deck-breakdown">
+        <h2>{{ 'STATISTICS.DECK_BREAKDOWN' | translate }}</h2>
+        <div class="breakdown-list">
+          <div *ngFor="let stat of deckStats()" class="breakdown-item">
+            <div class="deck-info">
+              <h3 class="deck-name">{{ stat.deck.name }}</h3>
+              <div class="deck-meta">
+                <span class="card-count">{{ stat.cardCount }} {{ stat.cardCount === 1 ? 'card' : 'cards' }}</span>
+                <span class="last-studied" *ngIf="stat.lastLearned; else neverStudied">
+                  {{ 'STATISTICS.LAST_STUDIED' | translate: { days: getDaysAgo(stat.lastLearned) } }}
+                </span>
+                <ng-template #neverStudied>
+                  <span class="last-studied">{{ 'STATISTICS.NEVER_STUDIED' | translate }}</span>
+                </ng-template>
+              </div>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill" [style.width.%]="(stat.cardCount / (totalCards() || 1)) * 100"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
 </main>

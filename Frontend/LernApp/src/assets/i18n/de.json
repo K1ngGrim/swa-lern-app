@@ -94,5 +94,18 @@
     "BACK_TO_DECK": "Zurück zur Deckliste",
     "RESTART": "Weiter lernen",
     "NO_CARDS": "Für dieses Deck sind aktuell keine Karten zum Lernen bereit."
+  },
+  "STATISTICS": {
+    "TITLE": "Statistiken",
+    "LOADING": "Statistiken werden geladen...",
+    "ERROR_LOADING": "Fehler beim Laden der Statistiken. Bitte versuche es erneut.",
+    "TOTAL_DECKS": "Gesamt-Decks",
+    "TOTAL_CARDS": "Gesamt-Karten",
+    "STUDIED_TODAY": "Heute gelernt",
+    "STUDIED_THIS_WEEK": "Diese Woche gelernt",
+    "DECK_BREAKDOWN": "Deck-Übersicht",
+    "LAST_STUDIED": "Zuletzt gelernt vor {{days}} Tagen",
+    "NEVER_STUDIED": "Noch nie gelernt",
+    "NO_DECKS": "Du hast noch kein Deck erstellt."
   }
 }

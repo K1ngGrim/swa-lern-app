@@ -94,5 +94,18 @@
     "BACK_TO_DECK": "Back to decks",
     "RESTART": "Continue Learning",
     "NO_CARDS": "There are no cards ready to learn in this deck yet."
+  },
+  "STATISTICS": {
+    "TITLE": "Statistics",
+    "LOADING": "Loading statistics...",
+    "ERROR_LOADING": "Failed to load statistics. Please try again.",
+    "TOTAL_DECKS": "Total Decks",
+    "TOTAL_CARDS": "Total Cards",
+    "STUDIED_TODAY": "Studied Today",
+    "STUDIED_THIS_WEEK": "Studied This Week",
+    "DECK_BREAKDOWN": "Deck Breakdown",
+    "LAST_STUDIED": "Last learned {{days}} days ago",
+    "NEVER_STUDIED": "Never studied",
+    "NO_DECKS": "You haven't created any decks yet."
   }
 }
