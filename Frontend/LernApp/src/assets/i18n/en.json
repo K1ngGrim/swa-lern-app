@@ -105,6 +105,7 @@
     "STUDIED_THIS_WEEK": "Studied This Week",
     "DECK_BREAKDOWN": "Deck Breakdown",
     "LAST_STUDIED": "Last learned {{days}} days ago",
+    "STUDIED_TODAY_LABEL": "Studied today",
     "NEVER_STUDIED": "Never studied",
     "NO_DECKS": "You haven't created any decks yet."
   }

@@ -125,6 +125,14 @@ export class StatisticsPage {
     return Math.floor(diff / (1000 * 60 * 60 * 24));
   }
 
+  getLastStudiedTranslationKey(isoString: string | null): string {
+    const days = this.getDaysAgo(isoString);
+    if (days === 0) {
+      return 'STATISTICS.STUDIED_TODAY_LABEL';
+    }
+    return 'STATISTICS.LAST_STUDIED';
+  }
+
   getStudiedToday(): number {
     const today = new Date().toDateString();
     return this.deckStats().filter((stat) => {

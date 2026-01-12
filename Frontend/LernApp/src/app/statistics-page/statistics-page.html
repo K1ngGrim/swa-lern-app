@@ -55,7 +55,7 @@
                     <span class="card-count">{{ stat.cardCount }} {{ stat.cardCount === 1 ? 'card' : 'cards' }}</span>
                     @if (stat.lastLearned) {
                       <span class="last-studied">
-                        {{ 'STATISTICS.LAST_STUDIED' | translate: { days: getDaysAgo(stat.lastLearned) } }}
+                        {{ getLastStudiedTranslationKey(stat.lastLearned) | translate: { days: getDaysAgo(stat.lastLearned) } }}
                       </span>
                     } @else {
                       <span class="last-studied">{{ 'STATISTICS.NEVER_STUDIED' | translate }}</span>
