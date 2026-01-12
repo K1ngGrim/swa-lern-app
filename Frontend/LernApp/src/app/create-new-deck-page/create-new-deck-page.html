@@ -3,14 +3,18 @@
     <h1>{{ 'DECK_CREATE.TITLE' | translate }}</h1>
 
     <!-- Success Message -->
-    <div *ngIf="successMessage()" class="alert alert-success">
-      {{ successMessage() | translate }}
-    </div>
+    @if (successMessage()) {
+      <div class="alert alert-success">
+        {{ successMessage() | translate }}
+      </div>
+    }
 
     <!-- Error Message -->
-    <div *ngIf="errorMessage()" class="alert alert-error">
-      {{ errorMessage() | translate }}
-    </div>
+    @if (errorMessage()) {
+      <div class="alert alert-error">
+        {{ errorMessage() | translate }}
+      </div>
+    }
 
     <form [formGroup]="form" (ngSubmit)="onSubmit()" class="deck-form">
       <div class="form-field">
@@ -21,9 +25,11 @@
           formControlName="name"
           [class.invalid]="form.get('name')?.invalid && form.get('name')?.touched"
         />
-        <p class="field-error" *ngIf="form.get('name')?.hasError('required') && form.get('name')?.touched">
-          {{ 'DECK_CREATE.NAME_REQUIRED' | translate }}
-        </p>
+        @if (form.get('name')?.hasError('required') && form.get('name')?.touched) {
+          <p class="field-error">
+            {{ 'DECK_CREATE.NAME_REQUIRED' | translate }}
+          </p>
+        }
       </div>
 
       <div class="form-field">

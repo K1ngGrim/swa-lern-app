@@ -1,9 +1,11 @@
 <main class="page-content">
   <div class="content-container">
     <h1>{{ 'DECK_EDIT.TITLE' | translate }}</h1>
-    <p class="deck-id" *ngIf="deck() as currentDeck">
-      {{ 'DECK_EDIT.ID_LABEL' | translate }} {{ currentDeck.name }}
-    </p>
+    @if (deck()) {
+      <p class="deck-id">
+        {{ 'DECK_EDIT.ID_LABEL' | translate }} {{ deck()?.name }}
+      </p>
+    }
 
     <section class="card-form-section">
       <h2>{{ 'DECK_EDIT.ADD_CARD_TITLE' | translate }}</h2>
@@ -30,25 +32,37 @@
 
         <div class="actions">
           <button type="submit" [disabled]="addCardForm.invalid || isAddingCard()" class="primary-btn">
-            <span *ngIf="!isAddingCard()">{{ 'DECK_EDIT.ADD_CARD_BUTTON' | translate }}</span>
-            <span *ngIf="isAddingCard()">{{ 'DECK_EDIT.ADDING_CARD' | translate }}</span>
+            @if (!isAddingCard()) {
+              <span>{{ 'DECK_EDIT.ADD_CARD_BUTTON' | translate }}</span>
+            }
+            @if (isAddingCard()) {
+              <span>{{ 'DECK_EDIT.ADDING_CARD' | translate }}</span>
+            }
           </button>
         </div>
 
-        <p class="error" *ngIf="cardError() as errorKey">{{ errorKey | translate }}</p>
+        @if (cardError()) {
+          <p class="error">{{ cardError() | translate }}</p>
+        }
       </form>
     </section>
 
     <section class="cards-list-section">
       <h2>{{ 'DECK_EDIT.CARDS_TITLE' | translate }}</h2>
 
-      <p class="loading" *ngIf="isLoadingCards()">{{ 'DECK_EDIT.CARDS_LOADING' | translate }}</p>
-      <p class="placeholder" *ngIf="!isLoadingCards() && cards().length === 0">
-        {{ 'DECK_EDIT.NO_CARDS' | translate }}
-      </p>
+      @if (isLoadingCards()) {
+        <p class="loading">{{ 'DECK_EDIT.CARDS_LOADING' | translate }}</p>
+      }
+      @if (!isLoadingCards() && cards().length === 0) {
+        <p class="placeholder">
+          {{ 'DECK_EDIT.NO_CARDS' | translate }}
+        </p>
+      }
 
-      <ul class="cards-list" *ngIf="!isLoadingCards() && cards().length > 0">
-        <li class="card-item" *ngFor="let card of cards()">
+      @if (!isLoadingCards() && cards().length > 0) {
+        <ul class="cards-list">
+          @for (card of cards(); track card.cardId) {
+            <li class="card-item">
           <div class="card-text">
             <div class="card-front">
               <strong>{{ 'DECK_EDIT.CARD_FRONT' | translate }}</strong>
@@ -59,8 +73,10 @@
               <p>{{ card.back }}</p>
             </div>
           </div>
-        </li>
-      </ul>
+            </li>
+          }
+        </ul>
+      }
     </section>
   </div>
 </main>

@@ -1,30 +1,33 @@
 <main class="page-content">
   <div class="content-container">
-    <h1 *ngIf="deck() as currentDeck; else genericLearnTitle">
-      {{ currentDeck.name }}
-    </h1>
-    <ng-template #genericLearnTitle>
+    @if (deck()) {
+      <h1>{{ deck()?.name }}</h1>
+    } @else {
       <h1>{{ 'DECK_LEARN.TITLE' | translate }}</h1>
-    </ng-template>
+    }
 
     <!-- Loading / Error / Empty States -->
-    <p class="status" *ngIf="isLoading()">
-      {{ 'DECK_LEARN.LOADING' | translate }}
-    </p>
-    <p class="status error" *ngIf="!isLoading() && error() as errorKey">
-      {{ errorKey | translate }}
-    </p>
+    @if (isLoading()) {
+      <p class="status">
+        {{ 'DECK_LEARN.LOADING' | translate }}
+      </p>
+    }
+    @if (!isLoading() && error()) {
+      <p class="status error">
+        {{ error() | translate }}
+      </p>
+    }
 
-    <ng-container *ngIf="!isLoading() && !error()">
-      <ng-container *ngIf="!sessionCompleted(); else completed">
-        <ng-container *ngIf="currentCard as card; else noCards">
+    @if (!isLoading() && !error()) {
+      @if (!sessionCompleted()) {
+        @if (currentCard) {
           <div class="card-container" (click)="onCardClick()">
             <div class="card-inner" [class.flipped]="showBack()">
               <p class="card-text face front" [class.visible]="!showBack()">
-                {{ card.front }}
+                {{ currentCard.front }}
               </p>
               <p class="card-text face back" [class.visible]="showBack()">
-                {{ card.back }}
+                {{ currentCard.back }}
               </p>
             </div>
           </div>
@@ -44,17 +47,15 @@
             </button>
           </div>
 
-          <p class="progress" *ngIf="session()?.cards?.length as total">
-            {{ 'DECK_LEARN.PROGRESS' | translate: { current: currentIndex() + 1, total: total } }}
-          </p>
-        </ng-container>
-
-        <ng-template #noCards>
+          @if (session()?.cards?.length) {
+            <p class="progress">
+              {{ 'DECK_LEARN.PROGRESS' | translate: { current: currentIndex() + 1, total: session()?.cards?.length } }}
+            </p>
+          }
+        } @else {
           <p class="placeholder">{{ 'DECK_LEARN.NO_CARDS' | translate }}</p>
-        </ng-template>
-      </ng-container>
-
-      <ng-template #completed>
+        }
+      } @else {
         <div class="complete-state">
           <h2>{{ 'DECK_LEARN.COMPLETED_TITLE' | translate }}</h2>
           <p>{{ 'DECK_LEARN.COMPLETED_MESSAGE' | translate }}</p>
@@ -67,7 +68,7 @@
             </button>
           </div>
         </div>
-      </ng-template>
-    </ng-container>
+      }
+    }
   </div>
 </main>
