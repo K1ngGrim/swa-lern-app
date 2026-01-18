@@ -1,0 +1,50 @@
+@startuml
+skinparam shadowing false
+skinparam monochrome true
+skinparam packageStyle rectangle
+
+title Karteikarten Lern-Zustandsdiagramm (Spaced Repetition)
+
+[*] --> New
+
+state New {
+    New : DueDate: now (Again)
+    New : DueDate: +5min (Hard)
+    New : DueDate: +15min (Good)
+    New : DueDate: +3d (Easy)
+}
+
+state Learning {
+    Learning : DueDate: +1min (Again)
+    Learning : DueDate: +10min (Hard)
+    Learning : DueDate: +1d (Good/Easy)
+}
+
+state Review {
+    Review : Interval: Interval * Multiplier
+    Review : Multiplier: Hard(1.2), Good(2.0), Easy(3.0)
+}
+
+state Relearning {
+    Relearning : DueDate: +1min (Again)
+    Relearning : Interval: Max(1, Interval/2) (sonst)
+}
+
+' Übergänge von NEW
+New --> New : Again
+New --> Learning : Hard / Good
+New --> Review : Easy
+
+' Übergänge von LEARNING
+Learning --> Learning : Again / Hard
+Learning --> Review : Good / Easy
+
+' Übergänge von REVIEW
+Review --> Relearning : Again
+Review --> Review : Hard / Good / Easy
+
+' Übergänge von RELEARNING
+Relearning --> Relearning : Again
+Relearning --> Review : Hard / Good / Easy (Interval > 1d)
+
+@enduml

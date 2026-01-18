@@ -11,8 +11,7 @@ public static class DbSeeder
     {
         // DB anlegen falls nicht existiert
         await context.Database.MigrateAsync();
-
-        // ❗ nur seeden wenn leer
+        
         if (context.Decks.Any())
             return;
 
@@ -94,7 +93,7 @@ public static class DbSeeder
 
             for (int i = 0; i < entries; i++)
             {
-                var dayOfYear = random.Next(1, 366);
+                var dayOfYear = random.Next(1, DateTime.Now.DayOfYear);
 
                 statistics.Add(new StatisticEntity
                 {

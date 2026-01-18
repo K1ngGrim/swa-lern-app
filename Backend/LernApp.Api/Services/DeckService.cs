@@ -16,7 +16,7 @@ public class DeckService(
     public async Task<ListResponse<DeckResponseModel>> ListDecksAsync(Invoker invoker)
     {
         
-        var statsMap = await context.Statistic
+        var lastLearnedMap = await context.Statistic
             .AsNoTracking()
             .Where(x => x.UserId == invoker.UserId)
             .GroupBy(x => x.DeckId)
@@ -24,6 +24,28 @@ public class DeckService(
                 x => x.Key, 
                 x => 
                     x.Max(s => s.Date));
+        
+        var decks = await context.Decks
+            .AsNoTracking()
+            .Where(x => x.UserId == invoker.UserId)
+            .Select(x => x.DeckId)
+            .ToListAsync();
+
+        var cards = context.Cards
+            .AsNoTracking()
+            .Where(x =>
+                decks.Contains(x.DeckId))
+            .AsQueryable();
+
+        var cardsStatMap = await cards
+            .GroupBy(x => x.DeckId)
+            .ToDictionaryAsync(x => x.Key, x =>
+                new
+                {
+                    newCards = x.Count(s => s.State == CardState.New),
+                    learningCards = x.Count(s => s.State is CardState.Learning or CardState.Relearning),
+                    reviewCards = x.Count(s => s.State == CardState.Review),
+                });
 
         var result = await context.Decks
             .AsNoTracking()
@@ -35,7 +57,10 @@ public class DeckService(
                 Description = x.Description,
                 CardCount = x.Cards.Count,
                 UserId = x.UserId,
-                LastLearned = statsMap.GetValueOrDefault(x.DeckId),
+                LastLearned = lastLearnedMap.GetValueOrDefault(x.DeckId),
+                CardsLearning = cardsStatMap.GetValueOrDefault(x.DeckId)!.learningCards,
+                CardsNew = cardsStatMap.GetValueOrDefault(x.DeckId)!.newCards,
+                CardsReviewing = cardsStatMap.GetValueOrDefault(x.DeckId)!.reviewCards,
             })
             .Where(x => x.UserId == invoker.UserId)
             .ToListAsync();

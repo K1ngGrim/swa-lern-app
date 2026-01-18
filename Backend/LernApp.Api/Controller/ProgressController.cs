@@ -32,6 +32,6 @@ public class ProgressController(
     {
         await learningService.UpdateLearningStateAsync(User, cardId, rating);
 
-        return Ok("Card updated");
+        return Ok();
     }
 }

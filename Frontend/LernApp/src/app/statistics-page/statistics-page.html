@@ -63,8 +63,9 @@
                   </div>
                 </div>
                 <div class="progress-bar">
-                  <div class="progress-fill" [style.width.%]="((deck.cardCount??0) * 100) / (totalCards() || 1)"></div>
-
+                  <div class="progress-fill new" [style.width.%]="((deck.cardsNew??0) * 100) / (deck.cardCount || 1)"></div>
+                  <div class="progress-fill learning" [style.width.%]="((deck.cardsLearning??0) * 100) / (deck.cardCount || 1)"></div>
+                  <div class="progress-fill review" [style.width.%]="((deck.cardsReviewing??0) * 100) / (deck.cardCount || 1)"></div>
                 </div>
               </div>
             }
