@@ -88,6 +88,7 @@ builder.Services.ConfigureApplicationCookie(options =>
 builder.Services.AddScoped<DeckService>();
 builder.Services.AddScoped<CardService>();
 builder.Services.AddScoped<LearningService>();
+builder.Services.AddScoped<StatisticService>();
 
 builder.Services.AddAuthorization();
 
@@ -102,6 +103,13 @@ using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<CoreContext>();
     dbContext.Database.Migrate();
+}
+
+if (app.Environment.IsDevelopment() && false)
+{
+    using var scope = app.Services.CreateScope();
+    var db = scope.ServiceProvider.GetRequiredService<CoreContext>();
+    await DbSeeder.SeedAsync(db);
 }
 
 app.MapOpenApi();

@@ -14,7 +14,7 @@ import { AuthService } from './auth.service';
 export class App {
   protected readonly title = signal('LernApp');
   readonly languages = ['en', 'de'];
-  currentLang = signal<string>('en');
+  currentLang = signal<string>('de');
 
   constructor(
     private translate: TranslateService,
@@ -24,7 +24,7 @@ export class App {
     const supported = this.languages;
     translate.addLangs(supported);
 
-    let initial = 'en';
+    let initial = 'de';
     try {
       if (typeof window !== 'undefined' && window.localStorage) {
         const stored = window.localStorage.getItem('lernapp_lang');

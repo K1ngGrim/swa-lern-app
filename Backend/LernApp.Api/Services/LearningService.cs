@@ -9,7 +9,8 @@ namespace LernApp.Api.Services;
 
 public class LearningService(
     CoreContext context,
-    ILogger<LearningService> logger
+    ILogger<LearningService> logger,
+    StatisticService statisticService
 )
 {
 
@@ -18,7 +19,7 @@ public class LearningService(
         var cards = await context.Cards
             .Include(x => x.Deck)
             .Where(x => x.Deck.UserId == invoker.UserId && x.DeckId == deckId)
-            .Where(x => x.DueDate < DateTimeOffset.UtcNow)
+            .Where(x => x.DueDate < DateTimeOffset.UtcNow.AddMinutes(10))
             .OrderBy(x => x.DueDate)
             .Select(x => new CardResponseModel
             {
@@ -38,7 +39,7 @@ public class LearningService(
         };
     }
 
-    public async Task UpdateLearningStateAsync(Guid cardId, CardRating rating)
+    public async Task UpdateLearningStateAsync(Invoker invoker, Guid cardId, CardRating rating)
     {
         var card = await context.Cards.Where(x => x.CardId == cardId)
             .SingleAsync();
@@ -138,6 +139,8 @@ public class LearningService(
                 break;
             }
         }
+
+        await statisticService.IncrementCardStatistic(invoker, card.DeckId);
         await context.SaveChangesAsync();
     }
 

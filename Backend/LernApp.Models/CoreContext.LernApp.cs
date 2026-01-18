@@ -8,6 +8,7 @@ public partial class CoreContext
 
     public DbSet<CardEntity> Cards => Set<CardEntity>();
     public DbSet<DeckEntity> Decks => Set<DeckEntity>();
+    public DbSet<StatisticEntity> Statistic => Set<StatisticEntity>();
 
     protected void OnLernCreating(ModelBuilder modelBuilder)
     {
@@ -38,6 +39,28 @@ public partial class CoreContext
                 .WithMany(u => u.Decks)
                 .HasForeignKey(d => d.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        modelBuilder.Entity<StatisticEntity>(entity =>
+        {
+            entity.ToTable("statistic");
+            entity
+                .HasOne(s => s.User)
+                .WithMany()
+                .HasForeignKey(a => a.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            entity
+                .HasOne(s => s.Deck)
+                .WithMany()
+                .HasForeignKey(a => a.DeckId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        modelBuilder.Entity<StatisticEntity>().OwnsOne(entity =>
+            entity.Data, ownedNavigationBuilder =>
+        {
+            ownedNavigationBuilder.ToJson();
         });
     }
 

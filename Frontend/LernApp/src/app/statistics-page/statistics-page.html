@@ -36,26 +36,26 @@
       </div>
 
       <!-- Empty State -->
-      @if (deckStats().length === 0) {
+      @if (decks().length === 0) {
         <div class="empty-state">
           <p>{{ 'STATISTICS.NO_DECKS' | translate }}</p>
         </div>
       }
 
       <!-- Deck Breakdown -->
-      @if (deckStats().length > 0) {
+      @if (decks().length > 0) {
         <div class="deck-breakdown">
           <h2>{{ 'STATISTICS.DECK_BREAKDOWN' | translate }}</h2>
           <div class="breakdown-list">
-            @for (stat of deckStats(); track stat.deck.deckId) {
+            @for (deck of decks(); track deck.deckId) {
               <div class="breakdown-item">
                 <div class="deck-info">
-                  <h3 class="deck-name">{{ stat.deck.name }}</h3>
+                  <h3 class="deck-name">{{ deck.name }}</h3>
                   <div class="deck-meta">
-                    <span class="card-count">{{ stat.cardCount }} {{ stat.cardCount === 1 ? 'card' : 'cards' }}</span>
-                    @if (stat.lastLearned) {
+                    <span class="card-count">{{ deck.cardCount }} {{ deck.cardCount === 1 ? 'card' : 'cards' }}</span>
+                    @if (deck.lastLearned) {
                       <span class="last-studied">
-                        {{ getLastStudiedTranslationKey(stat.lastLearned) | translate: { days: getDaysAgo(stat.lastLearned) } }}
+                        {{ getLastStudiedTranslationKey(deck.lastLearned) | translate: { days: getDaysAgo(deck.lastLearned) } }}
                       </span>
                     } @else {
                       <span class="last-studied">{{ 'STATISTICS.NEVER_STUDIED' | translate }}</span>
@@ -63,7 +63,9 @@
                   </div>
                 </div>
                 <div class="progress-bar">
-                  <div class="progress-fill" [style.width.%]="(stat.cardCount / (totalCards() || 1)) * 100"></div>
+                  <div class="progress-fill new" [style.width.%]="((deck.cardsNew??0) * 100) / (deck.cardCount || 1)"></div>
+                  <div class="progress-fill learning" [style.width.%]="((deck.cardsLearning??0) * 100) / (deck.cardCount || 1)"></div>
+                  <div class="progress-fill review" [style.width.%]="((deck.cardsReviewing??0) * 100) / (deck.cardCount || 1)"></div>
                 </div>
               </div>
             }

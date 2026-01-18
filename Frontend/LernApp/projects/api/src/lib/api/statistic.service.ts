@@ -19,23 +19,24 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 // @ts-ignore
-import { LearningSessionResponse } from '../model/learning-session-response';
+import { StatisticResponseModel } from '../model/statistic-response-model';
+// @ts-ignore
+import { StatisticSummaryResponseModel } from '../model/statistic-summary-response-model';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
 import {
-    ProgressServiceInterface,
-    ApiLearningSessionDeckIdGetRequestParams,
-    ApiLearningUpdateCardIdPostRequestParams
-} from './progress.serviceInterface';
+    StatisticServiceInterface,
+    ApiStatisticGetRequestParams
+} from './statistic.serviceInterface';
 
 
 
 @Injectable({
   providedIn: 'root'
 })
-export class ProgressService implements ProgressServiceInterface {
+export class StatisticService implements StatisticServiceInterface {
 
     protected basePath = 'http://localhost:5000';
     public defaultHeaders = new HttpHeaders();
@@ -101,13 +102,16 @@ export class ProgressService implements ProgressServiceInterface {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiLearningSessionDeckIdGet(requestParameters: ApiLearningSessionDeckIdGetRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<LearningSessionResponse>;
-    public apiLearningSessionDeckIdGet(requestParameters: ApiLearningSessionDeckIdGetRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<LearningSessionResponse>>;
-    public apiLearningSessionDeckIdGet(requestParameters: ApiLearningSessionDeckIdGetRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<LearningSessionResponse>>;
-    public apiLearningSessionDeckIdGet(requestParameters: ApiLearningSessionDeckIdGetRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public apiStatisticGet(requestParameters: ApiStatisticGetRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<StatisticResponseModel>;
+    public apiStatisticGet(requestParameters: ApiStatisticGetRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<StatisticResponseModel>>;
+    public apiStatisticGet(requestParameters: ApiStatisticGetRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<StatisticResponseModel>>;
+    public apiStatisticGet(requestParameters: ApiStatisticGetRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         const deckId = requestParameters.deckId;
-        if (deckId === null || deckId === undefined) {
-            throw new Error('Required parameter deckId was null or undefined when calling apiLearningSessionDeckIdGet.');
+
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+        if (deckId !== undefined && deckId !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>deckId, 'deckId');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -148,10 +152,11 @@ export class ProgressService implements ProgressServiceInterface {
             }
         }
 
-        let localVarPath = `/api/learning/session/${this.configuration.encodeParam({name: "deckId", value: deckId, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: "uuid"})}`;
-        return this.httpClient.request<LearningSessionResponse>('get', `${this.configuration.basePath}${localVarPath}`,
+        let localVarPath = `/api/statistic`;
+        return this.httpClient.request<StatisticResponseModel>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
+                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,
@@ -163,25 +168,13 @@ export class ProgressService implements ProgressServiceInterface {
     }
 
     /**
-     * @param requestParameters
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiLearningUpdateCardIdPost(requestParameters: ApiLearningUpdateCardIdPostRequestParams, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<any>;
-    public apiLearningUpdateCardIdPost(requestParameters: ApiLearningUpdateCardIdPostRequestParams, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<any>>;
-    public apiLearningUpdateCardIdPost(requestParameters: ApiLearningUpdateCardIdPostRequestParams, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<any>>;
-    public apiLearningUpdateCardIdPost(requestParameters: ApiLearningUpdateCardIdPostRequestParams, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<any> {
-        const cardId = requestParameters.cardId;
-        if (cardId === null || cardId === undefined) {
-            throw new Error('Required parameter cardId was null or undefined when calling apiLearningUpdateCardIdPost.');
-        }
-        const rating = requestParameters.rating;
-
-        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
-        if (rating !== undefined && rating !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>rating, 'rating');
-        }
+    public apiStatisticSummaryGet(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<StatisticSummaryResponseModel>;
+    public apiStatisticSummaryGet(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<StatisticSummaryResponseModel>>;
+    public apiStatisticSummaryGet(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<StatisticSummaryResponseModel>>;
+    public apiStatisticSummaryGet(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext, transferCache?: boolean}): Observable<any> {
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -189,6 +182,9 @@ export class ProgressService implements ProgressServiceInterface {
         if (localVarHttpHeaderAcceptSelected === undefined) {
             // to determine the Accept header
             const httpHeaderAccepts: string[] = [
+                'text/plain',
+                'application/json',
+                'text/json'
             ];
             localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
         }
@@ -218,11 +214,10 @@ export class ProgressService implements ProgressServiceInterface {
             }
         }
 
-        let localVarPath = `/api/learning/update/${this.configuration.encodeParam({name: "cardId", value: cardId, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: "uuid"})}`;
-        return this.httpClient.request<any>('post', `${this.configuration.basePath}${localVarPath}`,
+        let localVarPath = `/api/statistic/summary`;
+        return this.httpClient.request<StatisticSummaryResponseModel>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                params: localVarQueryParameters,
                 responseType: <any>responseType_,
                 withCredentials: this.configuration.withCredentials,
                 headers: localVarHeaders,

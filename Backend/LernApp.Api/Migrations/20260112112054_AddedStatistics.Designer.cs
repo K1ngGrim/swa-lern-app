@@ -3,6 +3,7 @@ using System;
 using LernApp.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace LernApp.Api.Migrations
 {
     [DbContext(typeof(CoreContext))]
-    partial class CoreContextModelSnapshot : ModelSnapshot
+    [Migration("20260112112054_AddedStatistics")]
+    partial class AddedStatistics
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -126,26 +129,15 @@ namespace LernApp.Api.Migrations
 
             modelBuilder.Entity("LernApp.Models.Entities.StatisticEntity", b =>
                 {
-                    b.Property<Guid>("StatisticId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<DateOnly>("Date")
-                        .HasColumnType("date")
-                        .HasColumnName("date");
-
-                    b.Property<Guid>("DeckId")
-                        .HasColumnType("uuid");
-
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid")
                         .HasColumnName("user_id");
 
-                    b.HasKey("StatisticId");
+                    b.Property<DateTimeOffset>("Date")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("date");
 
-                    b.HasIndex("DeckId");
-
-                    b.HasIndex("UserId");
+                    b.HasKey("UserId", "Date");
 
                     b.ToTable("statistic", "core");
                 });
@@ -381,12 +373,6 @@ namespace LernApp.Api.Migrations
 
             modelBuilder.Entity("LernApp.Models.Entities.StatisticEntity", b =>
                 {
-                    b.HasOne("LernApp.Models.Entities.DeckEntity", "Deck")
-                        .WithMany()
-                        .HasForeignKey("DeckId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("LernApp.Models.Identity.IdentityUserEntity", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
@@ -395,26 +381,27 @@ namespace LernApp.Api.Migrations
 
                     b.OwnsOne("LernApp.Models.Entities.StatisticData", "Data", b1 =>
                         {
-                            b1.Property<Guid>("StatisticEntityStatisticId")
+                            b1.Property<Guid>("StatisticEntityUserId")
                                 .HasColumnType("uuid");
+
+                            b1.Property<DateTimeOffset>("StatisticEntityDate")
+                                .HasColumnType("timestamp with time zone");
 
                             b1.Property<int>("CardsLearned")
                                 .HasColumnType("integer");
 
-                            b1.HasKey("StatisticEntityStatisticId");
+                            b1.HasKey("StatisticEntityUserId", "StatisticEntityDate");
 
                             b1.ToTable("statistic", "core");
 
                             b1.ToJson("Data");
 
                             b1.WithOwner()
-                                .HasForeignKey("StatisticEntityStatisticId");
+                                .HasForeignKey("StatisticEntityUserId", "StatisticEntityDate");
                         });
 
                     b.Navigation("Data")
                         .IsRequired();
-
-                    b.Navigation("Deck");
 
                     b.Navigation("User");
                 });

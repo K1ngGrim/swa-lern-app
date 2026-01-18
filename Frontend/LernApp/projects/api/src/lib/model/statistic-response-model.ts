@@ -9,17 +9,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { StatisticModel } from './statistic-model';
 
 
-export interface DeckResponseModel { 
-    cardCount?: number;
-    lastLearned?: string;
-    cardsNew?: number;
-    cardsLearning?: number;
-    cardsReviewing?: number;
-    deckId?: string;
-    userId?: string;
-    name: string;
-    description?: string;
+export interface StatisticResponseModel { 
+    data?: Array<StatisticModel>;
 }
 
