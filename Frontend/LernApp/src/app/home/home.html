@@ -34,4 +34,13 @@
       </mat-card>
     </a>
   </section>
+
+  <div class="heatmap-container">
+    @if (statisticData().length > 0) {
+      <app-learning-heatmap [statistics]="statisticData()"></app-learning-heatmap>
+    }
+
+  </div>
+
+
 </main>

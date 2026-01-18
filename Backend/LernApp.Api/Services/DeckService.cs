@@ -15,15 +15,27 @@ public class DeckService(
 
     public async Task<ListResponse<DeckResponseModel>> ListDecksAsync(Invoker invoker)
     {
+        
+        var statsMap = await context.Statistic
+            .AsNoTracking()
+            .Where(x => x.UserId == invoker.UserId)
+            .GroupBy(x => x.DeckId)
+            .ToDictionaryAsync(
+                x => x.Key, 
+                x => 
+                    x.Max(s => s.Date));
 
         var result = await context.Decks
             .AsNoTracking()
+            .Include(x => x.Cards)
             .Select(x => new DeckResponseModel
             {
                 DeckId = x.DeckId,
                 Name = x.Name,
                 Description = x.Description,
+                CardCount = x.Cards.Count,
                 UserId = x.UserId,
+                LastLearned = statsMap.GetValueOrDefault(x.DeckId),
             })
             .Where(x => x.UserId == invoker.UserId)
             .ToListAsync();

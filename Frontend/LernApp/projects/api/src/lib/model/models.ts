@@ -13,3 +13,7 @@ export * from './learning-session-response';
 export * from './list-response-of-deck-response-model';
 export * from './login-request';
 export * from './login-response';
+export * from './statistic-data';
+export * from './statistic-model';
+export * from './statistic-response-model';
+export * from './statistic-summary-response-model';

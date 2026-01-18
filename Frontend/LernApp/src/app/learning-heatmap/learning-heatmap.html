@@ -1,0 +1,61 @@
+<svg
+  [attr.width]="
+    labelWidth +
+    (days.length ? (days[days.length - 1].week + 1) * (cellSize + gap) : 0)
+  "
+  [attr.height]="topLabelHeight + 7 * (cellSize + gap)"
+>
+
+  <!-- ===================== -->
+  <!-- Y-Axis (Weekdays) -->
+  <!-- ===================== -->
+  <g class="y-labels">
+    <text
+      *ngFor="let label of weekdayLabels"
+      [attr.x]="0"
+      [attr.y]="(topLabelHeight + label.row * (cellSize + gap) + cellSize) -3"
+      class="axis-label"
+    >
+      {{ label.text }}
+    </text>
+  </g>
+
+  <!-- ===================== -->
+  <!-- X-Axis (Months) -->
+  <!-- ===================== -->
+  <g class="x-labels">
+    <text
+      *ngFor="let month of monthLabels"
+      [attr.x]="labelWidth + month.week * (cellSize + gap)"
+      [attr.y]="topLabelHeight - 5"
+      class="axis-label"
+    >
+      {{ month.text }}
+    </text>
+  </g>
+
+  <!-- ===================== -->
+  <!-- Heatmap cells -->
+  <!-- ===================== -->
+  <g
+    class="heatmap-grid"
+    [attr.transform]="'translate(' + labelWidth + ',' + topLabelHeight + ')'"
+  >
+    <rect
+      *ngFor="let day of days"
+      class="heatmap-cell"
+      [attr.x]="day.week * (cellSize + gap)"
+      [attr.y]="day.weekday * (cellSize + gap)"
+      [attr.width]="cellSize"
+      [attr.height]="cellSize"
+      rx="3"
+      ry="3"
+      [attr.fill]="color(day.count)"
+    >
+      <title>
+        {{ day.date | date:'fullDate' }} — {{ day.count }} cards learned
+      </title>
+    </rect>
+  </g>
+
+</svg>

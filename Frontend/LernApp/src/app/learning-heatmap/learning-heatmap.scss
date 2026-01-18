@@ -1,0 +1,14 @@
+.axis-label {
+  font-size: 10px;
+  fill: #57606a;
+}
+
+.heatmap-cell {
+  pointer-events: bounding-box;
+}
+
+.heatmap-cell:hover {
+  filter: drop-shadow(0 1px 4px rgba(0,0,0,0.35));
+}
+
+

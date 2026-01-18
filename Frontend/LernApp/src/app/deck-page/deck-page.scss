@@ -183,10 +183,7 @@ h1 {
   gap: 1rem;
 }
 
-.deck-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.deck {
   padding: 1.5rem;
   background: white;
   border-radius: 8px;
@@ -196,6 +193,12 @@ h1 {
   &:hover {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   }
+}
+
+.deck-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .deck-info {
@@ -238,6 +241,11 @@ h1 {
   display: flex;
   gap: 0.5rem;
   margin-left: 1rem;
+}
+
+.deck-heatmap {
+  width: 100%;
+  display: flex;
 }
 
 .action-btn {

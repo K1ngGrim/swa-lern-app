@@ -11,6 +11,8 @@ api/identity.service.ts
 api/identity.serviceInterface.ts
 api/progress.service.ts
 api/progress.serviceInterface.ts
+api/statistic.service.ts
+api/statistic.serviceInterface.ts
 api/test.service.ts
 api/test.serviceInterface.ts
 configuration.ts
@@ -33,5 +35,9 @@ model/list-response-of-deck-response-model.ts
 model/login-request.ts
 model/login-response.ts
 model/models.ts
+model/statistic-data.ts
+model/statistic-model.ts
+model/statistic-response-model.ts
+model/statistic-summary-response-model.ts
 param.ts
 variables.ts

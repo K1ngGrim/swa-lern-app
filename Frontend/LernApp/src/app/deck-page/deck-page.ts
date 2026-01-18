@@ -1,109 +1,96 @@
-import { Component, inject, signal } from '@angular/core';
-import { DeckService, DeckResponseModel, CardService } from 'api';
+import {Component, computed, inject, OnInit, signal} from '@angular/core';
+import {DeckService, DeckResponseModel, CardService, StatisticService} from 'api';
 import { Router } from '@angular/router';
 import { Location, CommonModule } from '@angular/common';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { AuthService } from '../auth.service';
 import { TranslateModule } from '@ngx-translate/core';
+import {lastValueFrom} from "rxjs";
+import {Exception} from "sass";
+import {ContributionHeatmapComponent} from "../learning-heatmap/learning-heatmap";
 
 @Component({
   selector: 'app-deck-page',
   standalone: true,
-  imports: [CommonModule, TranslateModule, MatTooltipModule],
+  imports: [CommonModule, TranslateModule, MatTooltipModule, ContributionHeatmapComponent],
   templateUrl: './deck-page.html',
   styleUrl: './deck-page.scss',
 })
-export class DeckPage {
+export class DeckPage implements OnInit {
   private deckService = inject(DeckService);
-  private cardService = inject(CardService);
   private router = inject(Router);
-  private location = inject(Location);
-  private auth = inject(AuthService);
+  private statsService = inject(StatisticService);
 
   decks = signal<DeckResponseModel[]>([]);
   isLoading = signal(true);
   error = signal<string | null>(null);
-  cardCounts = signal<Record<string, number>>({});
+
+  heatmapData = computed(async () => {
+
+    const statsMap = new Map();
+
+    for (const deck of this.decks()) {
+      const deckId = deck.deckId;
+
+      const data = (await lastValueFrom(this.statsService.apiStatisticGet(
+        {
+          deckId,
+        }
+      ))).data??[];
+
+      statsMap.set(deckId, data);
+    }
+
+
+    return statsMap;
+  });
 
   constructor() {
-    this.loadDecks();
+
   }
 
-  private loadDecks() {
+  async ngOnInit() {
+    await this.loadDecks();
+  }
+
+  private async loadDecks() {
     this.isLoading.set(true);
     this.error.set(null);
 
-    this.deckService.apiDecksGet().subscribe({
-      next: (response) => {
-        const decks = response.data || [];
-        this.decks.set(decks);
-        this.loadCardCountsForDecks(decks);
-        this.isLoading.set(false);
-      },
-      error: (err) => {
-        console.error('Error loading decks:', err);
-        this.error.set('DECK_LIST.ERROR_LOADING');
-        this.isLoading.set(false);
-      },
-    });
+    try {
+      this.decks.set(
+        (await lastValueFrom(this.deckService.apiDecksGet())).data
+      )
+    }catch (err) {
+      this.error.set('DECK_LIST.ERROR_LOADING');
+      console.error('Error loading decks:', err);
+    }finally {
+      this.isLoading.set(false);
+    }
   }
 
-  private loadCardCountsForDecks(decks: DeckResponseModel[]) {
-    decks.forEach((deck) => {
-      const deckId = deck.deckId;
-      if (!deckId) {
-        return;
-      }
-
-      this.cardService.apiCardsDeckIdGet({ deckId }).subscribe({
-        next: (cards) => {
-          const current = this.cardCounts();
-          this.cardCounts.set({ ...current, [deckId]: cards.length });
-        },
-        error: (err) => {
-          console.error('Error loading card count for deck', deckId, err);
-        },
-      });
-    });
-  }
-
-  startLearning(deckId: string | undefined) {
+  async startLearning(deckId: string | undefined) {
     if (deckId) {
-      this.router.navigate(['/learn', deckId]);
+      await this.router.navigate(['/learn', deckId]);
     }
   }
 
-  editDeck(deckId: string | undefined) {
+  async editDeck(deckId: string | undefined) {
     if (deckId) {
-      this.router.navigate(['/deck', deckId, 'edit']);
+      await this.router.navigate(['/deck', deckId, 'edit']);
     }
   }
 
-  createNewDeck() {
-    this.router.navigate(['/new-deck']);
+  async createNewDeck() {
+    await this.router.navigate(['/new-deck']);
   }
 
-  getCardCount(deckId: string | undefined): number {
-    if (!deckId) {
-      return 0;
-    }
-    const map = this.cardCounts();
-    return Object.prototype.hasOwnProperty.call(map, deckId) ? map[deckId] : 0;
-  }
+  getLastLearned(dateString: string |null): string | null {
 
-  getLastLearned(deckId: string | undefined): string | null {
-    if (!deckId) {
-      return null;
-    }
+    if (!dateString) return null;
 
     try {
-      const key = `lernapp_lastLearned_${deckId}`;
-      const stored = localStorage.getItem(key);
-      if (!stored) {
-        return null;
-      }
-
-      const date = new Date(stored);
+      const date = new Date(dateString);
       if (isNaN(date.getTime())) {
         return null;
       }
@@ -113,18 +100,11 @@ export class DeckPage {
         month: 'short',
         day: 'numeric',
       });
+
+
     } catch (err) {
-      console.error('Error reading last learned timestamp for deck', deckId, err);
+      console.error('Error reading last learned timestamp', err);
       return null;
     }
-  }
-
-  goBack() {
-    this.router.navigate(['/home']);
-  }
-
-  logout() {
-    this.auth.logout();
-    this.router.navigate(['/login']);
   }
 }

@@ -11,12 +11,8 @@
  */
 
 
-export interface DeckResponseModel { 
-    cardCount?: number;
-    lastLearned?: string;
-    deckId?: string;
-    userId?: string;
-    name: string;
-    description?: string;
+export interface StatisticSummaryResponseModel { 
+    learnedToday?: number;
+    learnedThisWeek?: number;
 }
 

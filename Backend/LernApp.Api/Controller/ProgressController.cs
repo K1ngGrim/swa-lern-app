@@ -12,7 +12,10 @@ namespace LernApp.Api.Controller;
 
 [ApiController]
 [Route("api/learning")]
-public class ProgressController(CoreContext context, LearningService learningService) : ControllerBase
+public class ProgressController(
+    CoreContext context, 
+    LearningService learningService
+    ) : ControllerBase
 {
 
     [HttpGet("session/{deckId}")]
@@ -27,7 +30,7 @@ public class ProgressController(CoreContext context, LearningService learningSer
     [Authorize]
     public async Task<IActionResult> UpdateCardProgress([FromRoute] Guid cardId, [FromQuery] CardRating rating)
     {
-        await learningService.UpdateLearningStateAsync(cardId, rating);
+        await learningService.UpdateLearningStateAsync(User, cardId, rating);
 
         return Ok("Card updated");
     }
