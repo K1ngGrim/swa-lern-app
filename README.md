@@ -1,3 +1,4 @@
+
 # LernApp - Dokumentation
 
 Diese Dokumentation beschreibt die Architektur, den Entwurf und die Implementierung der LernApp, einer webbasierten Anwendung zum Lernen mit Karteikarten basierend auf dem Spaced Repetition Prinzip.
@@ -5,30 +6,29 @@ Diese Dokumentation beschreibt die Architektur, den Entwurf und die Implementier
 ## Inhaltsverzeichnis
 1. [Einleitung](#1-einleitung)
 2. [Grundlagen](#2-grundlagen)
-3. [Umsetzung / Implementierung](#3-umsetzung--implementierung)
-4. [Deployment & Datenhaltung](#4-deployment--datenhaltung)
-5. [Fazit](#5-fazit)
-6. [Anhang: How to Run](#anhang-how-to-run)
+3. [Software-Architektur](#3-software-architektur)
+4. [Implementierung](#4-implementierung)
+5. [Deployment & Datenhaltung](#5-deployment--datenhaltung)
+6. [Fazit](#6-fazit)
+7. [Anhang: How to Run](#anhang-how-to-run)
 
 ---
 
 ## 1. Einleitung
 
 ### Motivation
-Physische Karteikarten sind oft mühsam zu transportieren, schwer zu organisieren und nicht mehr zeitgemäß. Studierende stehen häufig vor dem Problem, dass klassische Lernmethoden (wie das wiederholte Lesen von Skripten) nur zu kurzfristigem Erfolg führen ("Bulimielernen"). Digitale Lösungen bieten hier enorme Vorteile durch Algorithmen, die den Lernprozess optimieren.
+Physische Karteikarten sind oft mühsam zu transportieren, schwer zu organisieren und nicht mehr zeitgemäß. Studierende stehen häufig vor dem Problem, dass klassische Lernmethoden, wie das wiederholte Lesen von Skripten, nur zu kurzfristigem Erfolg führen. Digitale Lösungen bieten hier enorme Vorteile durch Algorithmen, die den Lernprozess optimieren.
 
 ### Zielsetzung
-Ziel dieses Projekts war die Entwicklung einer modernen, webbasierten Lernkarten-App ("LernApp"). Der Fokus lag dabei auf:
-* Einer sauberen **Software-Architektur** mit klarer Trennung von Frontend und Backend.
-* Der Implementierung eines **Spaced Repetition Algorithmus** zur Steigerung der Lerneffizienz.
-* Einer intuitiven Benutzeroberfläche zur Verwaltung von Decks und Karten.
+Ziel dieses Projekts war die Entwicklung einer webbasierten Lernkarten-App unter dem Namen "LernApp". Der Fokus der Entwicklung lag dabei auf einer sauberen **Software-Architektur**, die unter klarer Trennung von Frontend und Backend implementiert wurde. Ein weiteres Kernziel war die Implementierung eines **Spaced Repetition Algorithmus**, um die Lerneffizienz der Nutzer signifikant zu steigern.
+Für den Nutzer soll eine ansprechende und intuitiv bedienbare Benutzeroberfläche geschaffen werden, welcher die Verwaltung der Lerninhalte so einfach wie möglich gestaltet.
 
 ---
 
 ## 2. Grundlagen
 
 ### Detaillierte Problemstellung
-Das menschliche Gehirn vergisst Informationen exponentiell (Vergessenskurve nach Ebbinghaus). Um Informationen langfristig zu speichern, müssen sie in optimalen Abständen wiederholt werden. Die LernApp adressiert genau dieses Problem, indem sie dem Nutzer Karten genau dann wieder vorlegt, bevor er sie zu vergessen droht.
+Das menschliche Gehirn vergisst Informationen exponentiell. Um Informationen langfristig zu speichern, müssen sie in optimalen Abständen wiederholt werden. Die LernApp adressiert genau dieses Problem, indem sie dem Nutzer Karten genau dann wieder vorlegt, bevor er sie zu vergessen droht.
 
 ### Technologieauswahl & Begründung
 
@@ -51,13 +51,35 @@ Die zentralen Anwendungsfälle sind:
 
 ### Muss-/Kann-Kriterien
 * **Muss**: Karten erstellen, Decks verwalten, Lernlogik (Algorithmus), Persistenz in Datenbank, REST-Schnittstelle.
-* **Kann**: Benutzerverwaltung (wurde implementiert!), Statistik-Ansicht (Grundgerüst vorhanden), Import/Export.
+* **Kann**: Benutzerverwaltung, Statistik-Ansicht, Import/Export.
 
 ---
 
-## 3. Umsetzung / Implementierung
+## 3. Software-Architektur
 
-Die Architektur folgt dem **MVC (Model-View-Controller)** Pattern, verteilt auf Client und Server.
+![System Architecture](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/DeinRepo/swa-lern-app/main/doc/uml/architecture.puml)
+*(Siehe auch lokal: [doc/uml/architecture.puml](doc/uml/architecture.puml))*
+
+### Architektur-Pattern
+Die Anwendung folgt grundsätzlich einer **Client-Server-Architektur**, wobei das **MVC (Model-View-Controller)** Pattern logisch aufgeteilt und interpretiert wird:
+
+*   **Model (Backend & Database)**:
+    Die Datenstruktur und Geschäftslogik liegen zentral im Backend. Die Entitäten (`Card`, `Deck`, `Identity`) und die Business-Regeln (Lern-Algorithmus) bilden das Model. Dieses ist vollständig vom Frontend entkoppelt.
+*   **Controller (Backend API)**:
+    Die ASP.NET Core Controller fungieren als Schnittstelle. Sie nehmen Aktionen entgegen, manipulieren das Model und liefern Daten zurück. Sie kümmern sich *nicht* um die Darstellung (HTML).
+*   **View (Frontend)**:
+    Das Angular-Frontend übernimmt die Rolle der View. Es rendert die vom Backend empfangenen Daten und stellt die Benutzeroberfläche bereit. Gleichzeitig beinhaltet es eigene Logik zur Steuerung der Anzeige (Client-Side Controller Logik).
+
+### Trennung von Frontend und Backend
+Ein zentrales Merkmal dieser Architektur ist die strikte Trennung via **REST API**:
+
+1.  **Unabhängiger Betrieb**: Frontend und Backend sind separate Projekte, die getrennt gebaut und deployed werden können (hier via Docker Container orchestriert).
+2.  **Austauschbarkeit**: Da das Backend nur Daten (JSON) und kein UI liefert, ist das Frontend vollständig austauschbar.
+3.  **Erweiterbarkeit**: Auf die existierende Backend-Struktur kann problemlos ein **weiterer Client** aufgesetzt werden. Beispielsweise könnte eine native **Smartphone-App** (iOS/Android) entwickelt werden, die dieselben API-Endpunkte nutzt wie die Webanwendung. Der Lernfortschritt wäre dabei sofort zwischen Web und App synchronisiert, da beide auf dieselbe Datenbank zugreifen.
+
+---
+
+## 4. Implementierung
 
 ### Backend (.NET 8)
 Das Backend stellt die Geschäftslogik und Datenhaltung bereit.
@@ -87,16 +109,21 @@ Das Sicherheitskonzept basiert auf **ASP.NET Core Identity**.
 
 ### Frontend (Angular 20)
 Das Frontend ist als Single Page Application (SPA) realisiert.
-* **Struktur**: Nutzung von **Standalone Components** (modernster Angular Standard ohne NgModules).
+* **Struktur**: Nutzung von **Standalone Components**.
     * `Pages`: `Home`, `DeckPage`, `CreateNewDeckPage`, `LoginPage`.
 * **Kommunikation**: `AuthService` managed den Login-Status. Die Kommunikation zum Backend erfolgt über Services (`DeckService`, `CardService`), die automatisch aus der OpenAPI-Spezifikation generiert wurden.
 * **Internationalisierung**: Einsatz von `@ngx-translate` zur Unterstützung mehrerer Sprachen (DE/EN).
 
 ### Datenbank-Design
-Das ER-Modell wurde relational umgesetzt:
-* Ein `User` hat `n` Decks.
-* Ein `Deck` hat `n` Cards.
-* Eine `Card` speichert ihren eigenen Lernfortschritt (`State`, `Interval`, `DueDate`).
+Das ER-Modell wurde relational umgesetzt und ist in folgendem Diagramm dargestellt:
+
+![Entity Relationship Diagram](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/DeinRepo/swa-lern-app/main/doc/uml/erm.puml)
+*(Siehe auch lokal: [doc/uml/erm.puml](doc/uml/erm.puml))*
+
+Das Datenmodell basiert auf drei zentralen Beziehungen:
+*   **User zu Deck (1:n)**: Ein Nutzer kann beliebig viele Decks erstellen. Diese Beziehung definiert die Zugehörigkeit der Daten und ermöglicht, dass Nutzer nur Ihre eigenen Lerninhalte sehen.
+*   **Deck zu Card (1:n)**: Ein Deck dient als Container für viele Karteikarten. Dies ermöglicht die logische Gruppierung von Lerninhalten.
+*   **Card zu Progress (1:n)**: Jede Karte kann mehrere Lerneinträge besitzen. Während der aktuelle Lernzustand direkt auf der Karte gespeichert wird, dient die `Progress`-Entität dazu, die Historie der Lernvorgänge aufzuzeichnen. Dies ermöglicht spätere statistische Auswertungen über den Lernerfolg.
 
 ---
 
@@ -110,17 +137,14 @@ Das System wird aktuell mittels **Docker Compose** betrieben, was eine einfache 
     * **Datenbank**: Ein offizieller PostgreSQL Container (`postgres:latest`).
 
 ### Datenpersistenz
-**WICHTIG**: Im aktuellen Entwicklungsstadium (Prototyp) sind **keine Docker Volumes** konfiguriert.
 * **Datenspeicherung**: Die Daten liegen ausschließlich im flüchtigen Dateisystem des PostgreSQL-Containers (`/var/lib/postgresql/data`).
-* **Konsequenz**: Solange die Container laufen oder nur gestoppt (`docker stop`) werden, bleiben die Daten erhalten. Werden die Container jedoch entfernt (`docker compose down`), **gehen alle Daten (User, Decks, Lernfortschritt) unwiderruflich verloren**.
-* **Ausblick**: Für einen produktiven Betrieb muss ein Volume-Mapping (z.B. `- ./data:/var/lib/postgresql/data`) in der `docker-compose.yml` ergänzt werden, um die Daten auf dem Host-System dauerhaft zu persistieren.
+* **Konsequenz**: Solange die Container laufen oder nur gestoppt (`docker stop`) werden, bleiben die Daten erhalten. Werden die Container jedoch entfernt (`docker compose down`), gehen alle Daten unwiderruflich verloren. Ursprünglich war hier die Idee, eine SQ-Lite Datenbank zu verwenden, um Daten auch offline lokal speicherbar zu machen. Dies wurde abgeändert, nachdem entschieden wurde die accountgebundene Nutzerverwaltung mit einzubauen.
 
 ---
 
 ## 5. Fazit
 
 Das Projekt **LernApp** konnte erfolgreich umgesetzt werden. Die zentralen Anforderungen (Muss-Kriterien) wurden vollständig erfüllt. Durch den Einsatz moderner Technologien (.NET 8, Angular 20) und Werkzeuge (Docker, OpenAPI Generator) entstand eine stabile und wartbare Anwendung.
-
 Besonders hervorzuheben ist die Implementierung der Benutzerverwaltung (ursprünglich ein Kann-Kriterium) sowie der funktionierende Spaced Repetition Algorithmus im Backend. Die klare Trennung der Verantwortlichkeiten ermöglicht eine einfache Erweiterung der App in der Zukunft (z.B. um detailliertere Statistiken oder mobile Apps).
 
 ---

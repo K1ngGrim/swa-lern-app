@@ -16,15 +16,22 @@ package "Frontend (View Layer)" as FrontendLayer #LightBlue {
             component "Home" as HomeComp
             component "DeckPage" as DeckComp
             component "CreateNewDeckPage" as CreateDeckComp
+            component "DeckDetailPage" as DeckDetailComp
+            component "DeckEditPage" as DeckEditComp
+            component "DeckLearnPage" as DeckLearnComp
             component "StatisticsPage" as StatsComp
             component "LoginPage" as LoginComp
         }
         
-        package "Services" as AppServices {
+        package "Application Services" as AppServices {
             component "AuthService" as AuthService
+        }
+        
+        package "Generated API Services" as FrontendServices {
             component "IdentityService" as IdentityService
             component "DeckService" as DeckService
             component "CardService" as CardService
+            component "ProgressService" as ProgressService
         }
         
         package "UI Framework" as UIFramework {
@@ -155,11 +162,23 @@ HomeComp --> AuthService
 DeckComp --> DeckService
 DeckComp --> AuthService
 CreateDeckComp --> AuthService
+CreateDeckComp --> DeckService
+
+DeckDetailComp --> AuthService
+DeckEditComp --> AuthService
+DeckEditComp --> CardService
+DeckEditComp --> DeckService
+DeckLearnComp --> AuthService
+DeckLearnComp --> ProgressService
+DeckLearnComp --> DeckService
 StatsComp --> AuthService
+StatsComp --> DeckService
+StatsComp --> CardService
 
 DeckService -down-> WebAPI : HTTP/REST
 CardService -down-> WebAPI
 IdentityService -down-> WebAPI
+ProgressService -down-> WebAPI
 
 ' ============================================
 ' RELATIONSHIPS - Backend to Business Logic
