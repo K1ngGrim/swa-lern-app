@@ -40,30 +40,47 @@ public class DeckService(
         var cardsStatMap = await cards
             .GroupBy(x => x.DeckId)
             .ToDictionaryAsync(x => x.Key, x =>
-                new
+                new CardStatDto
                 {
-                    newCards = x.Count(s => s.State == CardState.New),
-                    learningCards = x.Count(s => s.State is CardState.Learning or CardState.Relearning),
-                    reviewCards = x.Count(s => s.State == CardState.Review),
+                    NewCards = x.Count(s => s.State == CardState.New),
+                    LearningCards = x.Count(s => s.State is CardState.Learning or CardState.Relearning),
+                    ReviewCards = x.Count(s => s.State == CardState.Review),
                 });
 
-        var result = await context.Decks
+        var decksn = await context.Decks
             .AsNoTracking()
             .Include(x => x.Cards)
-            .Select(x => new DeckResponseModel
+            .Where(x => x.UserId == invoker.UserId)
+            .Select(x => new
+            {
+                x.DeckId,
+                x.Name,
+                x.Description,
+                x.UserId,
+                CardCount = x.Cards.Count
+            })
+            .ToListAsync();
+
+        
+        var result = decksn.Select(x =>
+        {
+            var stats = cardsStatMap.GetValueOrDefault(x.DeckId);
+
+            return new DeckResponseModel
             {
                 DeckId = x.DeckId,
                 Name = x.Name,
                 Description = x.Description,
-                CardCount = x.Cards.Count,
+                CardCount = x.CardCount,
                 UserId = x.UserId,
+
                 LastLearned = lastLearnedMap.GetValueOrDefault(x.DeckId),
-                CardsLearning = cardsStatMap.GetValueOrDefault(x.DeckId)!.learningCards,
-                CardsNew = cardsStatMap.GetValueOrDefault(x.DeckId)!.newCards,
-                CardsReviewing = cardsStatMap.GetValueOrDefault(x.DeckId)!.reviewCards,
-            })
-            .Where(x => x.UserId == invoker.UserId)
-            .ToListAsync();
+
+                CardsLearning  = stats?.LearningCards ?? 0,
+                CardsNew       = stats?.NewCards ?? 0,
+                CardsReviewing = stats?.ReviewCards ?? 0
+            };
+        }).ToList();
 
         var count = result.Count;
 
@@ -121,4 +138,11 @@ public class DeckService(
     }
 
 
+}
+
+public class CardStatDto
+{
+    public int NewCards { get; init; }
+    public int LearningCards { get; init; }
+    public int ReviewCards { get; init; }
 }
