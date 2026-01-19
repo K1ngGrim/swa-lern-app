@@ -25,6 +25,6 @@ services:
             condition: service_healthy
         environment:
           ASPNETCORE_ENVIRONMENT: Development
-          ConnectionStrings__Database: "Host=postgres;Port=5432;Database=lernapp;Username=postgres;Password=postgres"
+          ConnectionStrings__Database: "Host=postgres;Port=5432;Database=core;Username=postgres;Password=postgres"
         ports:
           - "${API_PORT:-5001}:8080"

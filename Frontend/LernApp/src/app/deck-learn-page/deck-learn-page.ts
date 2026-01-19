@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import {Component, HostListener, inject, signal} from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
@@ -30,6 +30,32 @@ export class DeckLearnPage {
   isSubmittingRating = signal(false);
   deck = signal<DeckDetailResponseModel | null>(null);
   sessionCompleted = signal(false);
+
+  @HostListener('window:keyup', ['$event'])
+  keyEvent(event: KeyboardEvent) {
+
+    if (event.keyCode == KEY_CODE.SPACE_BAR) {
+      if (this.showBack()) {
+        this.rateCard(2);
+        return;
+      }else {
+        this.onCardClick();
+        return;
+      }
+    }
+
+    if (this.showBack()) {
+      if (event.keyCode == KEY_CODE.NUM_1) {
+        this.rateCard(0);
+      }else if (event.keyCode == KEY_CODE.NUM_2) {
+        this.rateCard(1);
+      }else if (event.keyCode == KEY_CODE.NUM_3) {
+        this.rateCard(2);
+      }else if (event.keyCode == KEY_CODE.NUM_4) {
+        this.rateCard(3);
+      }
+    }
+  }
 
   constructor() {
     if (this.deckId) {
@@ -102,6 +128,8 @@ export class DeckLearnPage {
     this.showBack.update((prev) => !prev);
   }
 
+
+
   rateCard(rating: number) {
     const card = this.currentCard;
     if (!card || !card.cardId || this.isSubmittingRating()) {
@@ -173,4 +201,12 @@ export class DeckLearnPage {
       console.error('Error storing last learned timestamp:', err);
     }
   }
+}
+
+export enum KEY_CODE {
+  NUM_1 = 49,
+  NUM_2 = 50,
+  NUM_3 = 51,
+  NUM_4 = 52,
+  SPACE_BAR= 32
 }
