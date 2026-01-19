@@ -57,8 +57,8 @@ Die zentralen Anwendungsfälle sind:
 
 ## 3. Software-Architektur
 
-![System Architecture](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/DeinRepo/swa-lern-app/main/doc/uml/architecture.puml)
-*(Siehe auch lokal: [doc/uml/architecture.puml](doc/uml/architecture.puml))*
+![System Architecture](doc/uml/architecture.png)
+*(Siehe: [doc/uml/architecture.puml](doc/uml/architecture.puml))*
 
 ### Architektur-Pattern
 Die Anwendung folgt grundsätzlich einer **Client-Server-Architektur**, wobei das **MVC (Model-View-Controller)** Pattern logisch aufgeteilt und interpretiert wird:
@@ -117,7 +117,7 @@ Das Frontend ist als Single Page Application (SPA) realisiert.
 ### Datenbank-Design
 Das ER-Modell wurde relational umgesetzt und ist in folgendem Diagramm dargestellt:
 
-![Entity Relationship Diagram](http://www.plantuml.com/plantuml/proxy?cache=no&src=https://raw.githubusercontent.com/DeinRepo/swa-lern-app/main/doc/uml/erm.puml)
+![Entity Relationship Diagram](doc/uml/erm.png)
 *(Siehe auch lokal: [doc/uml/erm.puml](doc/uml/erm.puml))*
 
 Das Datenmodell basiert auf drei zentralen Beziehungen:
