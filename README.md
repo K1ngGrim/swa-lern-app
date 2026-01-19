@@ -119,7 +119,7 @@ Das Frontend ist als Single Page Application (SPA) realisiert.
 ### Datenbank-Design
 Das ER-Modell wurde relational umgesetzt und ist in folgendem Diagramm dargestellt:
 
-![Entity Relationship Diagram](doc/uml/erm.png)
+![Entity Relationship Diagram](doc/uml/ERM.png)
 *(Siehe auch lokal: [doc/uml/erm.puml](doc/uml/erm.puml))*
 
 Das Datenmodell basiert auf drei zentralen Beziehungen:
