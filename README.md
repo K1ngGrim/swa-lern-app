@@ -92,6 +92,8 @@ Das Backend stellt die Geschäftslogik und Datenhaltung bereit.
             * *Beispiel*: Eine Karte im Status `New`, die mit *Good* bewertet wird, springt in den Status `Learning` und wird in 15 Minuten erneut vorgelegt. Eine Karte im Status `Review`, die mit *Easy* bewertet wird, vervielfacht ihr Intervall (Faktor 3) und wird erst in `n * 3` Tagen wieder fällig.
         * **Sonderfälle**: Wenn eine Karte mit *Again* (kleinste Stufe) bewertet wird, wird ihr Fälligkeitsdatum sofort auf `jetzt` (oder `jetzt + 1 Minute` im Review-Modus) gesetzt.
             * *Konsequenz*: Ist die Lernsession noch aktiv (d.h. der Nutzer lernt gerade), wird diese Karte **sofort** oder sehr zeitnah wieder angezeigt, sobald die aktuelle Liste der fälligen Karten neu geladen oder abgearbeitet wird. Es gibt keine "Wartebank" für Karten, die man gerade nicht wusste – sie müssen wiederholt werden, bis sie sitzen.
+       
+![alt text](doc/spaced_repetition.png)
 
 * **Data Access Layer**: `CoreContext` (Entity Framework Core) managed den Zugriff auf die PostgreSQL Datenbank.
     * Die Datenbank ist in zwei Schemas unterteilt: `identity` (User, Rollen) und `core` (Decks, Karten, Lernfortschritt).
