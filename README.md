@@ -125,7 +125,7 @@ Das ER-Modell wurde relational umgesetzt und ist in folgendem Diagramm dargestel
 Das Datenmodell basiert auf drei zentralen Beziehungen:
 *   **User zu Deck (1:n)**: Ein Nutzer kann beliebig viele Decks erstellen. Diese Beziehung definiert die Zugehörigkeit der Daten und ermöglicht, dass Nutzer nur Ihre eigenen Lerninhalte sehen.
 *   **Deck zu Card (1:n)**: Ein Deck dient als Container für viele Karteikarten. Dies ermöglicht die logische Gruppierung von Lerninhalten.
-*   **Card zu Progress (1:n)**: Jede Karte kann mehrere Lerneinträge besitzen. Während der aktuelle Lernzustand direkt auf der Karte gespeichert wird, dient die `Progress`-Entität dazu, die Historie der Lernvorgänge aufzuzeichnen. Dies ermöglicht spätere statistische Auswertungen über den Lernerfolg.
+*   **Deck zu Statistic (1:n)**: Pro Tag und Deck wird ein Statistik-Eintrag erstellt. Dieser speichert aggregierte Informationen über den Lernfortschritt (z. B. Anzahl gelernter Karten), während der aktuelle Lernzustand direkt in der jeweiligen `Card`-Entität gespeichert wird.
 
 ---
 
