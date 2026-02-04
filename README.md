@@ -44,10 +44,59 @@ Die Anwendung ist in zwei Hauptbereiche unterteilt: **Frontend** und **Backend**
 
 ### Use Cases
 Die zentralen Anwendungsfälle sind:
-1. **Benutzerkonto**: Registrierung und Login.
-2. **Verwaltung**: Erstellen und Löschen von Decks und Karten.
-3. **Lernen**: Starten einer Lernsession, bei der fällige Karten angezeigt werden.
-4. **Bewertung**: Der Nutzer bewertet seine Antwort (*Again, Hard, Good, Easy*), was den Algorithmus beeinflusst.
+
+1.  **Benutzerkonto**
+    *   **Beschreibung**: Der Nutzer kann ein persönliches Konto erstellen und sich authentifizieren. Dies ist notwendig, um persönliche Lerninhalte und Fortschritte dauerhaft und sicher zu speichern.
+    *   **Relevanz**: Ohne Benutzerkonto wäre keine geräteübergreifende Synchronisation und keine langfristige Speicherung des Lernstatus möglich.
+    *   **Aktionen**: Registrierung mit E-Mail/Passwort, Login, Session-Management via Cookies.
+    *   *User Story*: Als neuer Nutzer möchte ich mich registrieren und anmelden können, damit meine Decks und mein Lernfortschritt gespeichert werden und ich von überall darauf zugreifen kann.
+
+2.  **Verwaltung (Decks & Karten)**
+    *   **Beschreibung**: Der Nutzer kann thematische Decks anlegen (z.B. "Englisch Vokabeln") und diese mit Lernkarten füllen. Decks können bearbeitet und gelöscht werden.
+    *   **Relevanz**: Ermöglicht die Strukturierung des Wissens in logische Einheiten, was für effektives Lernen essenziell ist.
+    *   **Aktionen**: Deck erstellen/benennen, Karten hinzufügen (Frage/Antwort), Karten bearbeiten/löschen.
+    *   *User Story*: Als Nutzer möchte ich Decks erstellen und Karten verwalten können, um meinen Lernstoff strukturiert und individuell zusammenzustellen.
+
+3.  **Lern-Session**
+    *   **Beschreibung**: Der Kernmodus der App. Der Nutzer startet eine Session für ein Deck und bekommt algorithmisch ausgewählte, fällige Karten präsentiert.
+    *   **Relevanz**: Durch das gezielte Abfragen fälliger Karten (Active Recall) wird die Vergessenskurve durchbrochen und das Wissen effizient gefestigt.
+    *   **Aktionen**: Deck auswählen, "Lernen" klicken, Fragen lesen, Antwort aufdecken.
+    *   *User Story*: Als Lernender möchte ich eine Lernsession starten, in der mir nur die jetzt relevanten Karten angezeigt werden, damit ich meine Lernzeit optimal nutze.
+
+4.  **Bewertung (Lernfortschritt)**
+    *   **Beschreibung**: Bewertet der Nutzer seine eigene Antwort (Again, Hard, Good, Easy), berechnet der Algorithmus den nächsten Abfragezeitpunkt.
+    *   **Relevanz**: Dies ist der Input für den Spaced-Repetition-Algorithmus. Es stellt sicher, dass schwerer Stoff öfter und leichter Stoff seltener wiederholt wird.
+    *   **Aktionen**: Antwortqualität einschätzen, entsprechenden Button klicken.
+    *   *User Story*: Als Nutzer möchte ich angeben können, wie gut ich eine Antwort wusste, damit die App das nächste Wiederholungsintervall für mich anpasst.
+
+### Kommunikationsfluss (Beispiele)
+
+#### 1. Deck erstellen
+UI (create-new-deck-page.ts)
+  ↓ Nutzer gibt Name ein und klickt "Erstellen"
+  ↓ Aufruf: `DeckService.createDeck(deckModel)`
+Business Logic (Frontend)
+  ↓ Sendet `POST /api/deck` an Backend
+Controller (DeckController.cs)
+  ↓ Empfängt Request, ruft `DeckService.CreateDeckAsync()`
+Business Logic (Backend)
+  ↓ Validiert Eingabe, erstellt `Deck` Entität
+Data Access (CoreContext)
+  ↓ `Decks.Add()` -> `SaveChanges()` persistiert in PostgreSQL DB
+
+#### 2. Karte bewerten (Lernen)
+UI (deck-learn-page.ts)
+  ↓ Nutzer klickt Bewertung (z.B. "Good")
+  ↓ Aufruf: `ProgressService.updateProgress(cardId, rating)`
+Business Logic (Frontend)
+  ↓ Sendet `POST /api/learning/update/{cardId}` mit Rating
+Controller (ProgressController.cs)
+  ↓ Empfängt Request, ruft `LearningService.LogProgressAsync()`
+Business Logic (LearningService.cs)
+  ↓ Berechnet neues Intervall/Fälligkeit (Spaced Repetition)
+  ↓ Aktualisiert `Card` Status
+Data Access (CoreContext)
+  ↓ `SaveChanges()` speichert neuen Kartenstatus in DB
 
 ### Muss-/Kann-Kriterien
 * **Muss**: Karten erstellen, Decks verwalten, Lernlogik (Algorithmus), Persistenz in Datenbank, REST-Schnittstelle.
