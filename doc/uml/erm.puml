@@ -1,7 +1,10 @@
 @startuml EntityRelationshipDiagram
-' SmartLearn – Entity-Relationship-Diagramm (GUID-Version, kompatible Syntax)
-
+' SmartLearn – Entity-Relationship-Diagramm (aktualisierte Struktur)
+left to right direction
 !theme plain
+
+skinparam linetype polyline
+skinparam linetype ortho
 
 entity "AspNetUsers" as User {
     *Id : uuid
@@ -15,7 +18,9 @@ entity "Decks" as Deck {
     *Id : uuid
     --
     userId : uuid
+    creatorId : uuid
     created : datetime
+    modifierId : uuid
     modified : datetime
 }
 
@@ -25,21 +30,28 @@ entity "Cards" as Card {
     deckId : uuid
     front : string
     back : string
+    creatorId : uuid
     created : datetime
+    modifierId : uuid
     modified : datetime
+    repetitions : int
+    interval : double
+    due_date : datetime
 }
 
-entity "Progress" as Progress {
-    *Id : uuid
+entity "Statistics" as Statistic {
+    *StatisticId : uuid
     --
-    cardId : uuid
-    progress : int
-    date : datetime
+    deckId : uuid
+    user_id : uuid
+    date : date
+    data : jsonb { cardsLearned : int }
 }
 
-' Beziehungen mit Multiplicitäten (kompatibel)
-User "1" -- "0..*" Deck : besitzt
-Deck "1" -- "0..*" Card : enthält
-Card "1" -- "0..*" Progress : hat Lernfortschritt
+' Beziehungen mit Multiplicitäten
+User "1" --- "0..*" Deck : besitzt
+Deck "1" ---- "0..*" Card : enthält
+User "1" -- "0..*" Statistic : erstellt
+Deck "1" ---- "0..*" Statistic : gehört zu
 
 @enduml

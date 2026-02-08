@@ -34,40 +34,117 @@ Das menschliche Gehirn vergisst Informationen exponentiell. Um Informationen lan
 
 Die Anwendung ist in zwei Hauptbereiche unterteilt: **Frontend** und **Backend**.
 
-| Bereich | Technologie | Begründung |
-|---------|-------------|------------|
-| **Backend** | **.NET 8 (ASP.NET Core)** | Aktuelles Long-Term-Support (LTS) Framework von Microsoft. Bietet hohe Performance, Typsicherheit (C#) und mit **Entity Framework Core** ein mächtiges ORM für Datenbankzugriffe. Die **Web API** Architektur ermöglicht eine saubere REST-Schnittstelle. |
-| **Frontend** | **Angular 20** | Modernes, komponenten-basiertes Framework. Die statische Typisierung durch TypeScript und die strikte Struktur (Standalone Components) fördern die Wartbarkeit. Nutzung von **Angular Material** für ein konsistentes UI-Design. |
-| **Datenbank** | **PostgreSQL** | Leistungsfähiges, relationales Open-Source-Datenbanksystem. Ideal für strukturierte Daten (User, Decks, Cards) und komplexe Abfragen. Läuft isoliert im Docker-Container. |
-| **API Client** | **OpenAPI Generator** | Automatische Generierung des Frontend-Codes (Services, Models) basierend auf der Swagger-Spezifikation des Backends. Verhindert Diskrepanzen zwischen Client und Server. |
-| **Auth** | **ASP.NET Identity** | Etablierter Standard für Benutzerverwaltung. Nutzung von **Cookie-Authentication** (HttpOnly) für erhöhte Sicherheit im Vergleich zu LocalStorage-JWTs. |
+| Bereich        | Technologie               | Begründung                                                                                                                                                                                                                                                |
+|----------------|---------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Backend**    | **.NET 8 (ASP.NET Core)** | Aktuelles Long-Term-Support (LTS) Framework von Microsoft. Bietet hohe Performance, Typsicherheit (C#) und mit **Entity Framework Core** ein mächtiges ORM für Datenbankzugriffe. Die **Web API** Architektur ermöglicht eine saubere REST-Schnittstelle. |
+| **Frontend**   | **Angular 20**            | Modernes, komponenten-basiertes Framework. Die statische Typisierung durch TypeScript und die strikte Struktur (Standalone Components) fördern die Wartbarkeit. Nutzung von **Angular Material** für ein konsistentes UI-Design.                          |
+| **Datenbank**  | **PostgreSQL**            | Leistungsfähiges, relationales Open-Source-Datenbanksystem. Ideal für strukturierte Daten (User, Decks, Cards) und komplexe Abfragen. Läuft isoliert im Docker-Container.                                                                                 |
+| **API Client** | **OpenAPI Generator**     | Automatische Generierung des Frontend-Codes (Services, Models) basierend auf der Swagger-Spezifikation des Backends. Verhindert Diskrepanzen zwischen Client und Server.                                                                                  |
+| **Auth**       | **ASP.NET Identity**      | Etablierter Standard für Benutzerverwaltung. Nutzung von **Cookie-Authentication** (HttpOnly) für erhöhte Sicherheit im Vergleich zu LocalStorage-JWTs.                                                                                                   |
 
-### Use Cases
-Die zentralen Anwendungsfälle sind:
+## Use Cases
 
-1.  **Benutzerkonto**
-    *   **Beschreibung**: Der Nutzer kann ein persönliches Konto erstellen und sich authentifizieren. Dies ist notwendig, um persönliche Lerninhalte und Fortschritte dauerhaft und sicher zu speichern.
-    *   **Relevanz**: Ohne Benutzerkonto wäre keine geräteübergreifende Synchronisation und keine langfristige Speicherung des Lernstatus möglich.
-    *   **Aktionen**: Registrierung mit E-Mail/Passwort, Login, Session-Management via Cookies.
-    *   *User Story*: Als neuer Nutzer möchte ich mich registrieren und anmelden können, damit meine Decks und mein Lernfortschritt gespeichert werden und ich von überall darauf zugreifen kann.
+**Benutzerkonto**
 
-2.  **Verwaltung (Decks & Karten)**
-    *   **Beschreibung**: Der Nutzer kann thematische Decks anlegen (z.B. "Englisch Vokabeln") und diese mit Lernkarten füllen. Decks können bearbeitet und gelöscht werden.
-    *   **Relevanz**: Ermöglicht die Strukturierung des Wissens in logische Einheiten, was für effektives Lernen essenziell ist.
-    *   **Aktionen**: Deck erstellen/benennen, Karten hinzufügen (Frage/Antwort), Karten bearbeiten/löschen.
-    *   *User Story*: Als Nutzer möchte ich Decks erstellen und Karten verwalten können, um meinen Lernstoff strukturiert und individuell zusammenzustellen.
+* Benutzer öffnet die App und navigiert zur Registrierungsseite
+* Gibt E-Mail und Passwort ein und erstellt ein neues Konto
+* Benutzer meldet sich über die Login-Seite an
+* Session wird serverseitig über Cookies (HttpOnly) verwaltet
+* Benutzer bleibt über mehrere Requests hinweg authentifiziert
 
-3.  **Lern-Session**
-    *   **Beschreibung**: Der Kernmodus der App. Der Nutzer startet eine Session für ein Deck und bekommt algorithmisch ausgewählte, fällige Karten präsentiert.
-    *   **Relevanz**: Durch das gezielte Abfragen fälliger Karten (Active Recall) wird die Vergessenskurve durchbrochen und das Wissen effizient gefestigt.
-    *   **Aktionen**: Deck auswählen, "Lernen" klicken, Fragen lesen, Antwort aufdecken.
-    *   *User Story*: Als Lernender möchte ich eine Lernsession starten, in der mir nur die jetzt relevanten Karten angezeigt werden, damit ich meine Lernzeit optimal nutze.
+**Deck erstellen**
 
-4.  **Bewertung (Lernfortschritt)**
-    *   **Beschreibung**: Bewertet der Nutzer seine eigene Antwort (Again, Hard, Good, Easy), berechnet der Algorithmus den nächsten Abfragezeitpunkt.
-    *   **Relevanz**: Dies ist der Input für den Spaced-Repetition-Algorithmus. Es stellt sicher, dass schwerer Stoff öfter und leichter Stoff seltener wiederholt wird.
-    *   **Aktionen**: Antwortqualität einschätzen, entsprechenden Button klicken.
-    *   *User Story*: Als Nutzer möchte ich angeben können, wie gut ich eine Antwort wusste, damit die App das nächste Wiederholungsintervall für mich anpasst.
+* Benutzer navigiert zur Deck-Übersicht
+* Klickt auf „Neues Deck erstellen“
+* Gibt einen Namen für das Deck ein
+* Deck wird dem Benutzer zugeordnet und im Backend gespeichert
+
+**Deck bearbeiten**
+
+* Benutzer öffnet ein bestehendes Deck
+* Kann den Namen ändern
+* Änderungen werden persistent in der Datenbank gespeichert
+
+**Karte hinzufügen**
+
+* Benutzer öffnet ein Deck und klickt auf „Karte hinzufügen“
+* Formular erscheint mit Eingabefeldern für Frage und Antwort (optional Tags)
+* Karte wird gespeichert und dem Deck zugeordnet
+
+**Karte bearbeiten**
+
+* Benutzer öffnet eine Karte innerhalb eines Decks
+* Klickt auf Bearbeiten
+* Formular mit bestehenden Inhalten öffnet sich
+* Änderungen werden gespeichert
+
+**Karte löschen**
+
+* Benutzer löscht eine Karte aus einem Deck
+* Bestätigungsdialog erscheint
+* Karte wird nach Bestätigung entfernt
+
+**Lern-Session starten**
+
+* Benutzer wählt ein Deck aus
+* Klickt auf „Lernen“
+* System lädt algorithmisch ausgewählte, fällige Karten (Spaced Repetition)
+* Frage wird angezeigt, Antwort kann aufgedeckt werden
+
+**Antwort bewerten**
+
+* Benutzer bewertet seine Antwort mit
+
+    * Again
+    * Hard
+    * Good
+    * Easy
+* System berechnet das nächste Wiederholungsintervall
+* Kartenstatus und Fälligkeitsdatum werden aktualisiert
+
+---
+
+## User Stories
+
+**Benutzerkonto**
+
+* Als neuer Nutzer möchte ich mich registrieren und anmelden können, damit meine Decks und mein Lernfortschritt dauerhaft gespeichert und geschützt sind.
+
+**Deck- und Kartenverwaltung**
+
+* Als Nutzer möchte ich Decks erstellen und umbenennen können, damit ich meine Lerninhalte thematisch strukturieren kann.
+* Als Nutzer möchte Karten mit Frage und Antwort erstellen und bearbeiten können, damit ich meinen Lernstoff individuell zusammenstellen kann.
+* Als Nutzer möchte Karten löschen können, damit mein Deck übersichtlich bleibt.
+
+**Lernmodus**
+
+* Als Lernender möchte ich eine Lernsession starten können, damit ich gezielt mit meinen Karten lernen kann.
+* Als Lernender möchte ich nur die aktuell fälligen Karten sehen, damit ich meine Lernzeit effizient nutze.
+
+**Bewertung & Fortschritt**
+
+* Als Nutzer möchte ich angeben können, wie gut ich eine Antwort wusste, damit die App das nächste Wiederholungsintervall automatisch anpasst.
+
+---
+
+## Requirements
+
+| ID      | Name                    | Priorität | Beschreibung                                                                                | Use Case |
+|---------|-------------------------|-----------|---------------------------------------------------------------------------------------------|----------|
+| REQ-001 | Benutzer registrieren   | MUST      | Benutzer kann ein Konto mit E-Mail und Passwort erstellen                                   | UC1      |
+| REQ-002 | Benutzer anmelden       | MUST      | Benutzer kann sich authentifizieren; Session wird per HttpOnly-Cookie verwaltet             | UC1      |
+| REQ-003 | Deck erstellen          | MUST      | Benutzer kann ein neues Deck anlegen und benennen                                           | UC2      |
+| REQ-004 | Deck umbenennen         | MUST      | Benutzer kann den Namen eines bestehenden Decks ändern                                      | UC2      |
+| REQ-005 | Karte erstellen         | MUST      | Benutzer kann Karten mit Frage und Antwort erstellen                                        | UC3      |
+| REQ-006 | Karte bearbeiten        | MUST      | Benutzer kann Inhalte bestehender Karten ändern                                             | UC3      |
+| REQ-007 | Karte löschen           | MUST      | Benutzer kann Karten aus einem Deck entfernen                                               | UC3      |
+| REQ-008 | Lern-Session starten    | MUST      | Benutzer kann eine Lernsession für ein Deck starten                                         | UC4      |
+| REQ-009 | Fällige Karten anzeigen | MUST      | System zeigt algorithmisch ausgewählte, fällige Karten an                                   | UC4      |
+| REQ-010 | Antwort bewerten        | MUST      | Benutzer bewertet seine Antwort (Again/Hard/Good/Easy)                                      | UC5      |
+| REQ-011 | Spaced Repetition Logik | MUST      | System berechnet basierend auf Bewertung das nächste Intervall und Fälligkeitsdatum         | UC5      |
+| REQ-012 | Persistente Speicherung | MUST      | Alle Daten werden serverseitig in einer Datenbank gespeichert und einem Benutzer zugeordnet | Alle     |
+| REQ-013 | REST-Kommunikation      | MUST      | Frontend kommuniziert über eine REST-API mit dem Backend                                    | Alle     |
+| REQ-014 | Responsive Web-UI       | MUST      | Benutzeroberfläche funktioniert auf verschiedenen Bildschirmgrößen                          | Alle     |
 
 ### Kommunikationsfluss (Beispiele)
 

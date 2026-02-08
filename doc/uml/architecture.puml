@@ -4,8 +4,8 @@
 ' Title and styling
 title LernApp - MVC Architecture Diagram
 
-skinparam componentStyle rectangle
 skinparam linetype ortho
+skinparam componentStyle rectangle
 
 ' ============================================
 ' PRESENTATION LAYER (View - Frontend)
